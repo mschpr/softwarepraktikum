@@ -64,3 +64,10 @@ INSERT INTO "VokabelEnglisch" ("Vokabel", "Uebersetzung") VALUES
 ```SQL
 
 ```
+
+### JavaScript <--> SQL
+Um eine Verbindung zur SQL-Datenbank herzustellen, wird das Modul pg (PostgreSQL-Client für Node.js) genutzt. Das Modul setzt voraus, dass Node.js und npm (Node Package Manager) installiert sind. \
+Installation von pg:
+```bash
+npm install pg
+```
