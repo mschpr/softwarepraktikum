@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "pg": "^8.11.3"
+  },
+  "name": "softwarepraktikum",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^5.9.1"
   }
 }
