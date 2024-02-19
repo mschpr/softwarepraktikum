@@ -2,40 +2,43 @@ import { createRoot } from "react-dom/client";
 import { Button, TextField } from '@mui/material';
 import { useState } from "react";
 
-
 function App() {
-    const [value, setValue] = useState(17);
     const [text, setText] = useState('');
     const [compare, setCompare] = useState('');
 
     const checkText = (e) => {
         e.preventDefault();
-        console.log(text === compare);
+        if (text.Uebersetzung === compare) {
+            fetch("http://localhost:3001/SQL", {
+                method: "POST",
+                body: text.ID
+            })
+            console.log(text.ID);
+        }
+        else {
+            console.log("Falsch");
+        }
     }
 
     return (
         <>
             <h1>Startseite</h1>
-
             <Button
                 variant="outlined"
-                onClick={() => setValue(value + 1)}
+                onClick={() => fetch("http://localhost:3001/SQL") //liefert response
+                    .then(response => { return response.json() }) //liefert promise
+                    .then(data => setText(data))                  //extrahiert Daten
+                }
             >
-                Drück mich
+                API-Anfrage
             </Button>
-            <p>{value}</p>
+            <br />
+            <p>{text.Vokabel}</p>
             <br />
             <form onSubmit={checkText} autoComplete="off">
                 <TextField
-                    id="Text1"
-                    label="Text"
-                    variant="outlined"
-                    onChange={(e) => setText(e.target.value)}
-                    required
-                />
-                <TextField
-                    id="Text2"
-                    label="Compare"
+                    id="Text"
+                    label="Eingabe"
                     variant="outlined"
                     required
                     onChange={(e) => setCompare(e.target.value)}
