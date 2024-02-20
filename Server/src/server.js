@@ -3,6 +3,7 @@ import express from 'express';
 
 const app = express();
 const port = 3001;
+app.use(express.json({}));
 
 app.get('/', (req, res) => [
     res.send('Hello World!')
@@ -13,7 +14,10 @@ app.get('/SQL', async (req, res) => {
 })
 
 app.post('/SQL', async (req, res) => {
-    res.send(await updateProgress(req.body));
+    //const input = req.body;
+    //console.log(input);
+    await updateProgress(req.body.ID);
+    res.end();
 })
 
 app.listen(port, () => {

@@ -11,9 +11,10 @@ function App() {
         if (text.Uebersetzung === compare) {
             fetch("http://localhost:3001/SQL", {
                 method: "POST",
-                body: text.ID
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(text)
             })
-            console.log(text.ID);
+            console.log("Korrekt");
         }
         else {
             console.log("Falsch");

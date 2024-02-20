@@ -46,7 +46,7 @@ export async function updateProgress(IDVokabel) {
     else {
         await prisma.lernfortschrittEnglisch.updateMany({
             where: {
-                IDVokabel: vocabulary[0].ID,
+                IDVokabel: vocabulary[0].IDVokabel,
             },
             data: {
                 Datum: today.addDays(7),
