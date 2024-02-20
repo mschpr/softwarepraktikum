@@ -8,14 +8,16 @@ Date.prototype.addDays = function (days) {
 }
 
 // liefert alle Vokabeln
-export async function getVocabulary() {
-    let allData = await prisma.vokabelEnglisch.findMany();
+async function getVocabulary(language) {
+    let tableName = `Vokabel${language}`;
+    let allData = await prisma[tableName].findMany();
     return allData
 }
 
 // liefert IDVokabel, die nicht abgefragt werden sollen
-async function getProgress() {
-    let allData = await prisma.lernfortschrittEnglisch.findMany();
+async function getProgress(language) {
+    let tableName = `Lernfortschritt${language}`;
+    let allData = await prisma[tableName].findMany();
     let allIDVokabel = [];
     let today = new Date();
     allData.forEach(function (e) {
@@ -26,15 +28,16 @@ async function getProgress() {
     return allIDVokabel
 }
 
-export async function updateProgress(IDVokabel) {
-    let vocabulary = await prisma.lernfortschrittEnglisch.findMany({
+export async function updateProgress(IDVokabel, language) {
+    let tableName = `Lernfortschritt${language}`;
+    let vocabulary = await prisma[tableName].findMany({
         where: {
             IDVokabel: IDVokabel,
         },
     })
     let today = new Date();
     if (vocabulary.length === 0) {
-        await prisma.lernfortschrittEnglisch.create({
+        await prisma[tableName].create({
             data: {
                 IDVokabel: IDVokabel,
                 Datum: today.addDays(7),
@@ -44,7 +47,7 @@ export async function updateProgress(IDVokabel) {
     }
 
     else {
-        await prisma.lernfortschrittEnglisch.updateMany({
+        await prisma[tableName].updateMany({
             where: {
                 IDVokabel: vocabulary[0].IDVokabel,
             },
@@ -57,9 +60,9 @@ export async function updateProgress(IDVokabel) {
 }
 
 // gibt zu lernende Vokabel aus
-export async function learn() {
-    let vocabulary = await getVocabulary();
-    let progress = await getProgress();
+export async function learn(language) {
+    let vocabulary = await getVocabulary(language);
+    let progress = await getProgress(language);
     vocabulary = vocabulary.filter(function (entry) { return progress.indexOf(entry.ID) === -1 });
     if (vocabulary.length === 0) {
         console.log("Alle Vokabeln gelernt :D");

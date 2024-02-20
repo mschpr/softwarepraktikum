@@ -31,6 +31,15 @@ CREATE TABLE public."VokabelEnglisch"
     PRIMARY KEY ("ID")
 );
 ```
+````SQL
+CREATE TABLE public."VokabelSpanisch"
+(
+    "ID" serial NOT NULL,
+    "Vokabel" character varying NOT NULL,
+    "Uebersetzung" character varying NOT NULL,
+    PRIMARY KEY ("ID")
+);
+````
 ```SQL
 CREATE TABLE public."LernfortschrittEnglisch"
 (
@@ -41,6 +50,16 @@ CREATE TABLE public."LernfortschrittEnglisch"
     PRIMARY KEY ("ID")
 );
 ```
+````SQL
+CREATE TABLE public."LernfortschrittSpanisch"
+(
+    "ID" serial NOT NULL,
+    "IDVokabel" integer,
+    "Datum" date,
+    "Stufe" integer,
+    PRIMARY KEY ("ID")
+);
+````
 \
 Befüllung der Tabellen mit Werten:
 ```SQL
@@ -66,9 +85,28 @@ INSERT INTO "VokabelEnglisch" ("Vokabel", "Uebersetzung") VALUES
   ('sun', 'Sonne'),
   ('tree', 'Baum');
 ```
-
 ```SQL
-
+INSERT INTO "SpanischVokabeln" ("Vokabel", "Uebersetzung") VALUES 
+('Hola', 'Hallo'),
+('Adiós', 'Auf Wiedersehen'),
+('Sí', 'Ja'),
+('No', 'Nein'),
+('Por favor', 'Bitte'),
+('Gracias', 'Danke'),
+('Lo siento', 'Es tut mir leid'),
+('¿Cómo estás?', 'Wie geht es dir?'),
+('Bien', 'Gut'),
+('Mal', 'Schlecht'),
+('Amigo', 'Freund'),
+('Familia', 'Familie'),
+('Comida', 'Essen'),
+('Agua', 'Wasser'),
+('Casa', 'Haus'),
+('Escuela', 'Schule'),
+('Libro', 'Buch'),
+('Perro', 'Hund'),
+('Gato', 'Katze'),
+('Playa', 'Strand');
 ```
 
 ### JavaScript <--> SQL

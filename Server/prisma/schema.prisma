@@ -19,3 +19,16 @@ model LernfortschrittEnglisch {
   Datum     DateTime? @db.Date
   Stufe     Int?
 }
+
+model LernfortschrittSpanisch {
+  ID        Int       @id @default(autoincrement())
+  IDVokabel Int?
+  Datum     DateTime? @db.Date
+  Stufe     Int?
+}
+
+model VokabelSpanisch {
+  ID           Int    @id @default(autoincrement())
+  Vokabel      String @db.VarChar
+  Uebersetzung String @db.VarChar
+}
