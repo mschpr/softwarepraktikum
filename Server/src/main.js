@@ -8,7 +8,7 @@ Date.prototype.addDays = function (days) {
 }
 
 // liefert alle Vokabeln
-async function getVocabulary(language) {
+export async function getVocabulary(language) {
     let tableName = `Vokabel${language}`;
     let allData = await prisma[tableName].findMany();
     return allData
@@ -70,4 +70,10 @@ export async function learn(language) {
     }
     let randomNumber = Math.floor(Math.random() * vocabulary.length);
     return vocabulary[randomNumber];
+}
+
+export async function getProgressComplete(language) {
+    let tableName = `Lernfortschritt${language}`;
+    let allData = await prisma[tableName].findMany();
+    return allData
 }

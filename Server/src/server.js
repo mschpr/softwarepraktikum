@@ -1,4 +1,4 @@
-import { learn, updateProgress } from "./main.js";
+import { getProgressComplete, getVocabulary, learn, updateProgress } from "./main.js";
 import express from 'express';
 import cors from 'cors';
 
@@ -18,6 +18,14 @@ app.get('/SQL', async (req, res) => {
 app.post('/SQL', async (req, res) => {
     await updateProgress(req.body.text.ID, req.body.language);
     res.end();
+})
+
+app.get('/Progress', async (req, res) => {
+    res.send(await getProgressComplete(req.query.language))
+})
+
+app.get('/Vocabulary', async (req, res) => {
+    res.send(await getVocabulary(req.query.language))
 })
 
 app.listen(port, () => {
