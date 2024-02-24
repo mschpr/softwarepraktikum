@@ -77,3 +77,21 @@ export async function getProgressComplete(language) {
     let allData = await prisma[tableName].findMany();
     return allData
 }
+
+export async function getUser(username) {
+    let user = await prisma.Users.findMany({
+        where: {
+            username: username
+        },
+    })
+    return user
+}
+
+export async function getPassword(username) {
+    let user = await prisma.Users.findMany({
+        where: {
+            username: username
+        },
+    })
+    return user[0].password
+}

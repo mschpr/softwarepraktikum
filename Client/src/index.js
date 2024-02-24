@@ -7,6 +7,7 @@ import './index.css';
 import Tester from "./pages/tester.js";
 import Info from "./pages/info.js";
 import Chart from "./pages/chart.js";
+import Login from "./pages/login.js";
 
 function App() {
     return (<>
@@ -23,6 +24,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Tester />} />
                     <Route path="info" element={<Info />} />
+                    <Route path="login" element={<Login />} />
                     <Route path="chart" element={<Chart />} />
                 </Routes>
             </main>

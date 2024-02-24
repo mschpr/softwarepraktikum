@@ -32,3 +32,9 @@ model VokabelSpanisch {
   Vokabel      String @db.VarChar
   Uebersetzung String @db.VarChar
 }
+
+model Users {
+  ID       Int     @id @default(autoincrement())
+  username String? @db.VarChar
+  password String? @db.VarChar
+}

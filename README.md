@@ -60,6 +60,15 @@ CREATE TABLE public."LernfortschrittSpanisch"
     PRIMARY KEY ("ID")
 );
 ````
+````SQL
+CREATE TABLE public."Users"
+(
+    "ID" serial,
+    username character varying,
+    password character varying,
+    PRIMARY KEY ("ID")
+);
+````
 \
 Befüllung der Tabellen mit Werten:
 ```SQL
@@ -132,3 +141,6 @@ npm install react react-dom react-scripts
 npm install @mui/material @emotion/react @emotion/styled
 ````
 Express: https://expressjs.com/en/starter/installing.html
+
+
+YT Tutorial Passport: https://www.youtube.com/watch?v=fYow8zDOUVg&list=PLUUOvUPrFYcjel-IKiAQY4coJJ9EUjfcP&index=21
