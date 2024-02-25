@@ -1,7 +1,7 @@
 import express from "express";
 import { _ as User } from "../models/user.js";
 import passport from "passport";
-import { getUser } from "../src/main.js";
+import { getUserByUsername } from "../src/main.js";
 import cors from 'cors';
 
 export let _ = express.Router();
@@ -73,23 +73,23 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-_.get("/user", requireAuth, async (req, res) => {
-    try {
+// _.get("/user", requireAuth, async (req, res) => {
+//     try {
 
-        let user = await getUser(req.user.username);
-        res.status(200).json({
-            user: user[0].username,
-            id: user[0].ID
-        });
+//         let user = await getUser(req.user.id);
+//         res.status(200).json({
+//             user: user[0].username,
+//             id: user[0].ID
+//         });
 
-    } catch (err) {
-        console.error(new Error(err));
-        res.status(500).json({
-            msg: "Keinen Zugriff auf User. Internal Server Error",
-            code: 500
-        })
-    }
-});
+//     } catch (err) {
+//         console.error(new Error(err));
+//         res.status(500).json({
+//             msg: "Keinen Zugriff auf User. Internal Server Error",
+//             code: 500
+//         })
+//     }
+// });
 
 _.post("/logout", async function (req, res) {
     try {

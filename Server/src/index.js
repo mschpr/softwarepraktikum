@@ -1,4 +1,4 @@
-import { getPassword, getProgressComplete, getUser, getVocabulary, learn, updateProgress } from "./main.js";
+import { getPassword, getProgressComplete, getUserByUsername, getVocabulary, learn, updateProgress } from "./main.js";
 import express from 'express';
 import cors from 'cors';
 import passport from "passport";
@@ -45,7 +45,7 @@ passport.serializeUser(async (user, done) => {
 
 passport.deserializeUser(async (username, done) => {
     console.log(`Deserializing User: ${username}`);
-    let user = await getUser(username);
+    let user = await getUserByUsername(username);
     if (user.length === 1) {
         return done(null, { id: user[0].ID, username: user[0].username });
     } else {
@@ -57,7 +57,7 @@ passport.use("local", new LocalStrategy({ passReqToCallback: true },
     async (req, username, password, done) => {
         console.log(`2 - Local strategy verify cb ${JSON.stringify(username)}`);
 
-        let user = await getUser(username);
+        let user = await getUserByUsername(username);
         if (user.length === 0) {
             return done("Nutzername ungültig", false)
         }

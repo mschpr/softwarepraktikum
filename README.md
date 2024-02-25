@@ -23,56 +23,80 @@ CREATE DATABASE vokabeltester OWNER = admin ENCODING = 'UTF-8';
 \
 Erstellung der Tabellen:
 ```SQL
-CREATE TABLE public."VokabelEnglisch"
+CREATE TABLE public."VocabEnglish"
 (
-    "ID" serial NOT NULL,
-    "Vokabel" character varying NOT NULL,
-    "Uebersetzung" character varying NOT NULL,
+    "ID" serial,
+    vocab character varying,
+    translation character varying,
     PRIMARY KEY ("ID")
 );
 ```
 ````SQL
-CREATE TABLE public."VokabelSpanisch"
+CREATE TABLE public."VocabSpanish"
 (
     "ID" serial NOT NULL,
-    "Vokabel" character varying NOT NULL,
-    "Uebersetzung" character varying NOT NULL,
+    vocab character varying NOT NULL,
+    translation character varying NOT NULL,
     PRIMARY KEY ("ID")
 );
 ````
 ```SQL
-CREATE TABLE public."LernfortschrittEnglisch"
+CREATE TABLE public."ProgressEnglish"
 (
-    "ID" serial NOT NULL,
-    "IDVokabel" integer,
-    "Datum" date,
-    "Stufe" integer,
-    PRIMARY KEY ("ID")
+    "ID" serial,
+    "IDVocab" integer,
+    "IDUser" integer,
+    date date,
+    stage integer,
+    PRIMARY KEY ("ID"),
+    CONSTRAINT "IDVocab" FOREIGN KEY ("IDVocab")
+        REFERENCES public."VocabEnglish" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "IDUser" FOREIGN KEY ("IDUser")
+        REFERENCES public."Users" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 ```
 ````SQL
-CREATE TABLE public."LernfortschrittSpanisch"
+CREATE TABLE public."ProgressSpanish"
 (
-    "ID" serial NOT NULL,
-    "IDVokabel" integer,
-    "Datum" date,
-    "Stufe" integer,
-    PRIMARY KEY ("ID")
+    "ID" serial,
+    "IDVocab" integer,
+    "IDUser" integer,
+    date date,
+    stage integer,
+    PRIMARY KEY ("ID"),
+    CONSTRAINT "IDVocab" FOREIGN KEY ("IDVocab")
+        REFERENCES public."VocabSpanish" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "IDUser" FOREIGN KEY ("IDUser")
+        REFERENCES public."Users" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 ````
 ````SQL
 CREATE TABLE public."Users"
 (
-    "ID" serial,
+    "ID" serial NOT NULL,
     username character varying,
     password character varying,
+    name character varying,
+    role character varying,
     PRIMARY KEY ("ID")
 );
 ````
 \
 Befüllung der Tabellen mit Werten:
 ```SQL
-INSERT INTO "VokabelEnglisch" ("Vokabel", "Uebersetzung") VALUES
+INSERT INTO "VocabEnglish" ("vocab", "translation") VALUES
   ('apple', 'Apfel'),
   ('banana', 'Banane'),
   ('car', 'Auto'),
@@ -95,7 +119,7 @@ INSERT INTO "VokabelEnglisch" ("Vokabel", "Uebersetzung") VALUES
   ('tree', 'Baum');
 ```
 ```SQL
-INSERT INTO "SpanischVokabeln" ("Vokabel", "Uebersetzung") VALUES 
+INSERT INTO "VocabSpanish" ("vocab", "translation") VALUES 
 ('Hola', 'Hallo'),
 ('Adiós', 'Auf Wiedersehen'),
 ('Sí', 'Ja'),
@@ -117,6 +141,8 @@ INSERT INTO "SpanischVokabeln" ("Vokabel", "Uebersetzung") VALUES
 ('Gato', 'Katze'),
 ('Playa', 'Strand');
 ```
+
+Bei Fehler Kodierung:  \\!chcp 1252 (Codepage in psql anpassen)
 
 ### JavaScript <--> SQL
 Um eine Verbindung zur SQL-Datenbank herzustellen, wird das Modul pg (PostgreSQL-Client für Node.js) genutzt. Das Modul setzt voraus, dass Node.js und npm (Node Package Manager) installiert sind. \

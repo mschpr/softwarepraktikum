@@ -21,12 +21,12 @@ routerSQL.get('/learn', requireAuth, async (req, res) => {
 });
 
 routerSQL.post('/updateProgress', requireAuth, async (req, res) => {
-    await updateProgress(req.body.text.ID, req.body.language);
+    await updateProgress(req.body.text.ID, req.user.id, req.body.language);
     res.end();
 });
 
 routerSQL.get('/getProgressComplete', requireAuth, async (req, res) => {
-    res.send(await getProgressComplete(req.query.language))
+    res.send(await getProgressComplete(req.query.language, req.user.id))
 });
 
 routerSQL.get('/getVocabulary', requireAuth, async (req, res) => {

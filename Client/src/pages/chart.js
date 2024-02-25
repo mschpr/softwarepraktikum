@@ -8,19 +8,20 @@ async function getProgress(language) {
     return response.json();
 }
 
-function getVocabulary(language) {
-    return fetch(`http://localhost:3001/sql/getVocabulary?language=${language}`, { credentials: "include" })
-        .then(response => { return response.json() })
+async function getVocabulary(language) {
+    const response = await fetch(`http://localhost:3001/sql/getVocabulary?language=${language}`, { credentials: "include" })
+    if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
+    return response.json();
 }
 
 let learned = [0, 0];
 let unfinished = [0, 0];
 let notStarted = [0, 0];
 
-let EnglishProgress = await getProgress("Englisch");
-let SpanishProgress = await getProgress("Spanisch");
-let EnglishAll = await getVocabulary("Englisch");
-let SpanishAll = await getVocabulary("Spanisch");
+let EnglishProgress = await getProgress("English");
+let SpanishProgress = await getProgress("Spanish");
+let EnglishAll = await getVocabulary("English");
+let SpanishAll = await getVocabulary("Spanish");
 let EnglishNotStarted = [];
 let SpanishNotStarted = [];
 

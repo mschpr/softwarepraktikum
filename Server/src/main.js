@@ -9,14 +9,14 @@ Date.prototype.addDays = function (days) {
 
 // liefert alle Vokabeln
 export async function getVocabulary(language) {
-    let tableName = `Vokabel${language}`;
+    let tableName = `Vocab${language}`;
     let allData = await prisma[tableName].findMany();
     return allData
 }
 
 // liefert IDVokabel, die nicht abgefragt werden sollen
 async function getProgress(language) {
-    let tableName = `Lernfortschritt${language}`;
+    let tableName = `Progress${language}`;
     let allData = await prisma[tableName].findMany();
     let allIDVokabel = [];
     let today = new Date();
@@ -28,20 +28,22 @@ async function getProgress(language) {
     return allIDVokabel
 }
 
-export async function updateProgress(IDVokabel, language) {
-    let tableName = `Lernfortschritt${language}`;
+export async function updateProgress(IDVocab, IDUser, language) {
+    let tableName = `Progress${language}`;
     let vocabulary = await prisma[tableName].findMany({
         where: {
-            IDVokabel: IDVokabel,
+            IDVocab: IDVocab,
+            IDUser: IDUser,
         },
     })
     let today = new Date();
     if (vocabulary.length === 0) {
         await prisma[tableName].create({
             data: {
-                IDVokabel: IDVokabel,
-                Datum: today.addDays(7),
-                Stufe: 1,
+                IDVocab: IDVocab,
+                IDUser: IDUser,
+                date: today.addDays(7),
+                stage: 1,
             },
         })
     }
@@ -49,11 +51,13 @@ export async function updateProgress(IDVokabel, language) {
     else {
         await prisma[tableName].updateMany({
             where: {
-                IDVokabel: vocabulary[0].IDVokabel,
+                IDVocab: vocabulary[0].IDVocab,
+                IDUser: vocabulary[0].IDUser,
             },
             data: {
-                Datum: today.addDays(7),
-                Stufe: ++vocabulary[0].Stufe,
+                date: today.addDays(7),
+                IDUser: IDUser,
+                stage: ++vocabulary[0].stage,
             },
         })
     }
@@ -72,16 +76,29 @@ export async function learn(language) {
     return vocabulary[randomNumber];
 }
 
-export async function getProgressComplete(language) {
-    let tableName = `Lernfortschritt${language}`;
-    let allData = await prisma[tableName].findMany();
+export async function getProgressComplete(language, IDUser) {
+    let tableName = `Progress${language}`;
+    let allData = await prisma[tableName].findMany({
+        where: {
+            IDUser: IDUser,
+        },
+    });
     return allData
 }
 
-export async function getUser(username) {
+export async function getUserByUsername(username) {
     let user = await prisma.Users.findMany({
         where: {
             username: username
+        },
+    })
+    return user
+}
+
+export async function getUserByID(ID) {
+    let user = await prisma.Users.findMany({
+        where: {
+            ID: ID
         },
     })
     return user

@@ -7,34 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model VokabelEnglisch {
-  ID           Int    @id @default(autoincrement())
-  Vokabel      String @db.VarChar
-  Uebersetzung String @db.VarChar
-}
-
-model LernfortschrittEnglisch {
-  ID        Int       @id @default(autoincrement())
-  IDVokabel Int?
-  Datum     DateTime? @db.Date
-  Stufe     Int?
-}
-
-model LernfortschrittSpanisch {
-  ID        Int       @id @default(autoincrement())
-  IDVokabel Int?
-  Datum     DateTime? @db.Date
-  Stufe     Int?
-}
-
-model VokabelSpanisch {
-  ID           Int    @id @default(autoincrement())
-  Vokabel      String @db.VarChar
-  Uebersetzung String @db.VarChar
+model ProgressEnglish {
+  ID           Int           @id @default(autoincrement())
+  IDVocab      Int?
+  IDUser       Int?
+  date         DateTime?     @db.Date
+  stage        Int?
+  Users        Users?        @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
+  VocabEnglish VocabEnglish? @relation(fields: [IDVocab], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDVocab")
 }
 
 model Users {
-  ID       Int     @id @default(autoincrement())
-  username String? @db.VarChar
-  password String? @db.VarChar
+  ID              Int               @id @default(autoincrement())
+  username        String?           @db.VarChar
+  password        String?           @db.VarChar
+  name            String?           @db.VarChar
+  role            String?           @db.VarChar
+  ProgressEnglish ProgressEnglish[]
+  ProgressSpanish ProgressSpanish[]
+}
+
+model VocabEnglish {
+  ID              Int               @id @default(autoincrement())
+  vocab           String?           @db.VarChar
+  translation     String?           @db.VarChar
+  ProgressEnglish ProgressEnglish[]
+}
+
+model ProgressSpanish {
+  ID           Int           @id @default(autoincrement())
+  IDVocab      Int?
+  IDUser       Int?
+  date         DateTime?     @db.Date
+  stage        Int?
+  Users        Users?        @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
+  VocabSpanish VocabSpanish? @relation(fields: [IDVocab], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDVocab")
+}
+
+model VocabSpanish {
+  ID              Int               @id @default(autoincrement())
+  vocab           String            @db.VarChar
+  translation     String            @db.VarChar
+  ProgressSpanish ProgressSpanish[]
 }

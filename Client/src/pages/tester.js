@@ -3,7 +3,7 @@ import { useState } from "react";
 import '../index.css';
 
 const Tester = () => {
-    let languages = ["Englisch", "Spanisch"];
+    let languages = ["English", "Spanish"];
 
     const [text, setText] = useState('');
     const [compare, setCompare] = useState('');
@@ -12,7 +12,7 @@ const Tester = () => {
     const checkText = (e) => {
         let req = { text: text, language: language };
         e.preventDefault();
-        if (text.Uebersetzung === compare) {
+        if (text.translation === compare) {
             fetch("http://localhost:3001/sql/updateProgress", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -51,17 +51,16 @@ const Tester = () => {
                         <Grid item md={10}>
                             {language ? <><Button
                                 variant="outlined"
-                                onClick={() => {
-                                    fetch(`http://localhost:3001/sql/learn?language=${language}`, { credentials: "include" })
-                                        .then(response => { return response.json() })
-                                        .then(data => setText(data))
+                                onClick={async () => {
+                                    const response = await fetch(`http://localhost:3001/sql/learn?language=${language}`, { credentials: "include" });
+                                    if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
+                                    setText(await response.json());
                                 }}
                             >
                                 API-Anfrage
                             </Button>
                                 <br />
-                                <p>{text.Vokabel}</p>
-                                <br />
+                                <p>{text.vocab}</p>
                                 <form onSubmit={checkText} autoComplete="off">
                                     <TextField
                                         id="Text"
