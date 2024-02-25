@@ -2,15 +2,20 @@ import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import '../index.css';
 
-function getProgress(language) {
-    return fetch(`http://localhost:3001/Progress?language=${language}`)
-        .then(response => { return response.json() })
+async function getProgress(language) {
+    const response = await fetch(`http://localhost:3001/sql/getProgressComplete?language=${language}`, { credentials: "include" });
+    if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
+    return response.json();
 }
 
 function getVocabulary(language) {
-    return fetch(`http://localhost:3001/Vocabulary?language=${language}`)
+    return fetch(`http://localhost:3001/sql/getVocabulary?language=${language}`, { credentials: "include" })
         .then(response => { return response.json() })
 }
+
+let learned = [0, 0];
+let unfinished = [0, 0];
+let notStarted = [0, 0];
 
 let EnglishProgress = await getProgress("Englisch");
 let SpanishProgress = await getProgress("Spanisch");
@@ -18,10 +23,6 @@ let EnglishAll = await getVocabulary("Englisch");
 let SpanishAll = await getVocabulary("Spanisch");
 let EnglishNotStarted = [];
 let SpanishNotStarted = [];
-
-let learned = [0, 0]
-let unfinished = [0, 0]
-let notStarted = [0, 0]
 
 EnglishAll.forEach(function (e) {
     if (!(EnglishProgress.includes(e))) {

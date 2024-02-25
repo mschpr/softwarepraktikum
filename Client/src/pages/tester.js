@@ -13,10 +13,11 @@ const Tester = () => {
         let req = { text: text, language: language };
         e.preventDefault();
         if (text.Uebersetzung === compare) {
-            fetch("http://localhost:3001/SQL", {
+            fetch("http://localhost:3001/sql/updateProgress", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(req)
+                body: JSON.stringify(req),
+                credentials: "include"
             })
             console.log("Korrekt");
         }
@@ -51,7 +52,7 @@ const Tester = () => {
                             {language ? <><Button
                                 variant="outlined"
                                 onClick={() => {
-                                    fetch(`http://localhost:3001/SQL?language=${language}`)
+                                    fetch(`http://localhost:3001/sql/learn?language=${language}`, { credentials: "include" })
                                         .then(response => { return response.json() })
                                         .then(data => setText(data))
                                 }}

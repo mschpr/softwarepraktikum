@@ -4,6 +4,7 @@ import cors from 'cors';
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { _ as routerAuth } from "../lib/routerAuth.js";
+import routerSQL from "../lib/routerSQL.js";
 import cookieSession from "cookie-session";
 import bcrypt from "bcrypt";
 
@@ -72,28 +73,10 @@ passport.use("local", new LocalStrategy({ passReqToCallback: true },
 ));
 
 app.use("/auth", routerAuth);
-
-//Altes Zeug
+app.use("/sql", routerSQL);
 
 app.get('/', async (req, res) => {
-    res.send("Hello World")
-})
-
-app.get('/SQL', async (req, res) => {
-    res.send(await learn(req.query.language))
-})
-
-app.post('/SQL', async (req, res) => {
-    await updateProgress(req.body.text.ID, req.body.language);
-    res.end();
-})
-
-app.get('/Progress', async (req, res) => {
-    res.send(await getProgressComplete(req.query.language))
-})
-
-app.get('/Vocabulary', async (req, res) => {
-    res.send(await getVocabulary(req.query.language))
+    res.send("Test: Hello World")
 })
 
 _.start();

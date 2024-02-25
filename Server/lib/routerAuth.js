@@ -102,11 +102,6 @@ _.post("/logout", async function (req, res) {
     }
 });
 
-_.get("/test", passport.authenticate('local', {
-    successRedirect: ClientURL,
-    failureRedirect: `${ClientURL}info`,
-}))
-
 _.all("*", async function (req, res) {
     try {
         res.status(404).json({

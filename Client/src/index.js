@@ -1,13 +1,14 @@
 import { createRoot } from "react-dom/client";
 import { Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
-import { BrowserRouter, Link, NavLink, Route, Routes, redirect, useNavigate } from "react-router-dom";
+import { BrowserRouter, Link, NavLink, Route, Routes, redirect, useNavigate, useParams } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import './index.css';
 
 //pages
-import Tester from "./pages/tester.js";
-import Info from "./pages/info.js";
-import Chart from "./pages/chart.js";
-import Login from "./pages/login.js";
+const Tester = lazy(() => import("./pages/tester.js"));
+const Info = lazy(() => import("./pages/info.js"));
+const Chart = lazy(() => import("./pages/chart.js"));
+const Login = lazy(() => import("./pages/login.js"));
 
 function App() {
     return (<>
@@ -21,12 +22,14 @@ function App() {
                 </nav>
             </header>
             <main>
-                <Routes>
-                    <Route path="/" element={<Tester />} />
-                    <Route path="info" element={<Info />} />
-                    <Route path="login" element={<Login />} />
-                    <Route path="chart" element={<Chart />} />
-                </Routes>
+                <Suspense>
+                    <Routes>
+                        <Route path="/" element={<Tester />} />
+                        <Route path="info" element={<Info />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="chart" element={<Chart />} />
+                    </Routes>
+                </Suspense>
             </main>
         </BrowserRouter>
     </>)
