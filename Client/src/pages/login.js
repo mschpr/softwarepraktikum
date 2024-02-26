@@ -48,6 +48,7 @@ const Login = () => {
                 Submit
             </Button>
         </form>
+        <a href="/register">Registrieren</a>
     </>)
 }
 export default Login;

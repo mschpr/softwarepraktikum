@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import passport from "passport";
 const prisma = new PrismaClient();
 
 Date.prototype.addDays = function (days) {
@@ -102,6 +103,16 @@ export async function getUserByID(ID) {
         },
     })
     return user
+}
+
+export async function setUser(username, password, name) {
+    await prisma.Users.create({
+        data: {
+            username: username,
+            password: password,
+            name: name,
+        },
+    })
 }
 
 export async function getPassword(username) {

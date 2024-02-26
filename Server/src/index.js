@@ -13,7 +13,7 @@ const port = 3001;
 
 let _ = {};
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 _.start = () => {
     try {
@@ -77,6 +77,6 @@ app.use("/sql", routerSQL);
 
 app.get('/', async (req, res) => {
     res.send("Test: Hello World")
-})
+});
 
 _.start();

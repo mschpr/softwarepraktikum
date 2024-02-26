@@ -10,20 +10,20 @@ _.name = () => {
         "format": {
             "pattern": regex,
             "flags": "i",
-            "message": "Name muss Schema erfüllen: " + regex
+            "message": "Name enthält ungültige Zeichen"
         }
     }
     return constraints;
 }
 
-_.email = () => {
-    const constraints = {
-        "presence": { "allowEmpty": false },
-        "type": "string",
-        "email": true
-    }
-    return constraints;
-}
+// _.email = () => {
+//     const constraints = {
+//         "presence": { "allowEmpty": false },
+//         "type": "string",
+//         "email": true
+//     }
+//     return constraints;
+// }
 
 _.password = () => {
     const constraints = {

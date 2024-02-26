@@ -9,6 +9,7 @@ const Tester = lazy(() => import("./pages/tester.js"));
 const Info = lazy(() => import("./pages/info.js"));
 const Chart = lazy(() => import("./pages/chart.js"));
 const Login = lazy(() => import("./pages/login.js"));
+const Register = lazy(() => import("./pages/register.js"));
 
 function App() {
     return (<>
@@ -28,6 +29,7 @@ function App() {
                         <Route path="info" element={<Info />} />
                         <Route path="login" element={<Login />} />
                         <Route path="chart" element={<Chart />} />
+                        <Route path="register" element={<Register />} />
                     </Routes>
                 </Suspense>
             </main>

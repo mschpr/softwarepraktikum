@@ -7,9 +7,23 @@ const Register = () => {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
+    const createAccount = async (e) => {
+        let req = { name: name, username: username, password: password };
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:3001/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(req)
+        })
+        if (response.status === 200) {
+            window.location.replace("http://localhost:3000/");
+        }
+    }
+
     return (<>
         <h1>Registrieren</h1>
-        <form onSubmit={false} autoComplete="off">
+        <form onSubmit={createAccount} autoComplete="off">
             <TextField
                 id="Name"
                 label="Name"

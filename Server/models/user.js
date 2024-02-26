@@ -1,23 +1,13 @@
-import { v4 } from "uuid";
 import validate from "validate.js";
 import bcrypt from "bcrypt";
 import { _ as constraints } from "../lib/constraints.js";
+import { getUserByUsername } from "../src/main.js";
 
 export let _ = class User {
     constructor() {
-        this.created = new Date();
-        this.id = v4();
         this.username = null;
         this.name = null;
         this.password = null;
-    }
-
-    save() {
-        console.log(`${this.username} registriert`);
-    }
-
-    find(id) {
-        return "";
     }
 
     setName(name) {
@@ -39,14 +29,17 @@ export let _ = class User {
         }
     }
 
-    setUsername(username) {
+    async setUsername(username) {
         try {
-            if (username) {
-                username = username.trim().replace(/ +/g, ' ');
-            }
+            // if (username) {
+            //     username = username.trim().replace(/ +/g, ' ');
+            // }
             let msg = validate.single(username, constraints.name);
+            (await getUserByUsername(username)).length <= 1;
             if (msg) {
                 return msg;
+            } else if ((await getUserByUsername(username)).length > 0) {
+                return "Name bereits vergeben"
             }
             else {
                 this.username = username;
@@ -55,21 +48,6 @@ export let _ = class User {
 
         } catch (err) {
             throw new Error(err)
-        }
-    }
-
-    setEmail(email) {
-        try {
-            let msg = validate.single(email, constraints.email);
-            if (msg) {
-                return msg;
-            }
-            else {
-                this.email = email;
-                return;
-            }
-        } catch (err) {
-            throw new Error(err);
         }
     }
 

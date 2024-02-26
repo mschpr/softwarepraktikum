@@ -1,39 +1,54 @@
 import express from "express";
 import { _ as User } from "../models/user.js";
 import passport from "passport";
-import { getUserByUsername } from "../src/main.js";
+import { setUser } from "../src/main.js";
 import cors from 'cors';
 
 export let _ = express.Router();
-const ClientURL = "http://localhost:3000/"
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 }
 
 
-// _.post("/register", async function (req, res) {
-//     try {
-//         const { name, username, email, password } = req.body;
-//         let user = new User();
-//         let msg = false;
-//         msg = user.setName(name);
-//         msg = user.setUsername(username);
-//         msg = user.setEmail(email);
-//         msg = await user.setPassword(password);
-//         if (msg) return res.status(400).json({
-//             error: {
-//                 code: 400,
-//                 message: msg
-//             }
-//         })
-
-//         user.save();
-//         res.status(200).json(user);
-//     } catch (err) {
-//         throw new Error(err)
-//     }
-// })
+_.post("/register", async function (req, res) {
+    try {
+        const { name, username, password } = req.body;
+        let user = new User();
+        let msg = false;
+        msg = user.setName(name);
+        if (msg) {
+            return res.status(400).json({
+                error: {
+                    code: 400,
+                    message: msg
+                }
+            })
+        }
+        msg = await user.setUsername(username);
+        if (msg) {
+            return res.status(400).json({
+                error: {
+                    code: 400,
+                    message: msg
+                }
+            })
+        }
+        msg = await user.setPassword(password);
+        if (msg) {
+            return res.status(400).json({
+                error: {
+                    code: 400,
+                    message: msg
+                }
+            })
+        }
+        setUser(user.username, user.password, user.name);
+        res.status(200).json(user);
+    } catch (err) {
+        throw new Error(err)
+    }
+})
 
 _.post("/login", cors(corsOptions),
     (req, res, next) => {
@@ -73,25 +88,7 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-// _.get("/user", requireAuth, async (req, res) => {
-//     try {
-
-//         let user = await getUser(req.user.id);
-//         res.status(200).json({
-//             user: user[0].username,
-//             id: user[0].ID
-//         });
-
-//     } catch (err) {
-//         console.error(new Error(err));
-//         res.status(500).json({
-//             msg: "Keinen Zugriff auf User. Internal Server Error",
-//             code: 500
-//         })
-//     }
-// });
-
-_.post("/logout", async function (req, res) {
+_.post("/logout", async function (req, res) { //TODO: Funktionalität implementieren
     try {
         res.status(200).json({
             msg: "Erfolgreich abgemeldet",
