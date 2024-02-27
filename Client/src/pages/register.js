@@ -41,6 +41,7 @@ const Register = () => {
             <TextField
                 id="Password"
                 label="Passwort"
+                type="password"
                 variant="outlined"
                 required
                 onChange={(e) => setPassword(e.target.value)}

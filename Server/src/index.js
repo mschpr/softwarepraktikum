@@ -40,16 +40,17 @@ app.use(passport.session());
 passport.serializeUser(async (user, done) => {
     let username = JSON.stringify(user[0].username).replace(/"/g, '');
     console.log(`4 - Serialize User: ${username}`);
-    return done(null, username);
+    let cookieData = { ID: user[0].ID, username: username, role: user[0].role };
+    return done(null, cookieData);
 });
 
-passport.deserializeUser(async (username, done) => {
-    console.log(`Deserializing User: ${username}`);
-    let user = await getUserByUsername(username);
-    if (user.length === 1) {
-        return done(null, { id: user[0].ID, username: user[0].username });
+passport.deserializeUser(async (user, done) => {
+    console.log(`Deserializing User: ${user.username}`);
+    let result = await getUserByUsername(user.username);
+    if (result.length === 1) {
+        return done(null, { id: result[0].ID, username: result[0].username });
     } else {
-        return done(new Error(`Kein User ${username} gefunden`));
+        return done(new Error(`Kein User ${user.username} gefunden`));
     }
 })
 

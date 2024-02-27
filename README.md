@@ -85,12 +85,28 @@ CREATE TABLE public."ProgressSpanish"
 ````SQL
 CREATE TABLE public."Users"
 (
-    "ID" serial NOT NULL,
+    "ID" serial,
     username character varying,
     password character varying,
     name character varying,
     role character varying,
-    PRIMARY KEY ("ID")
+    PRIMARY KEY ("ID"),
+    CONSTRAINT username UNIQUE (username)
+);
+````
+````SQL
+CREATE TABLE public."Classes"
+(
+    "ID" smallserial,
+    name character varying,
+    teacher character varying,
+    language character varying,
+    PRIMARY KEY ("ID"),
+    CONSTRAINT teacher FOREIGN KEY (teacher)
+        REFERENCES public."Users" (username) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 ````
 \
