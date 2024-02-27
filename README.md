@@ -109,6 +109,24 @@ CREATE TABLE public."Classes"
         NOT VALID
 );
 ````
+````SQL
+CREATE TABLE public."ClassMembers"
+(
+    "IDClass" integer,
+    "IDUser" integer,
+    PRIMARY KEY ("IDClass", "IDUser"),
+    CONSTRAINT "IDClass" FOREIGN KEY ("IDClass")
+        REFERENCES public."Classes" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "IDUser" FOREIGN KEY ("IDUser")
+        REFERENCES public."Users" ("ID") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
+````
 \
 Befüllung der Tabellen mit Werten:
 ```SQL

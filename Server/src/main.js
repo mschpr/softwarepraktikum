@@ -123,3 +123,25 @@ export async function getPassword(username) {
     })
     return user[0].password
 }
+
+export async function getClassesByMember(IDUser) {
+    let allData = await prisma.ClassMembers.findMany({
+        where: {
+            IDUser: IDUser
+        },
+        include: {
+            Classes: true
+        }
+    })
+    return allData
+}
+
+export async function addUserToClass(username, IDClass) {
+    let user = await getUserByUsername(username);
+    await prisma.ClassMembers.create({
+        data: {
+            IDUser: user[0].ID,
+            IDClass: IDClass
+        },
+    })
+}

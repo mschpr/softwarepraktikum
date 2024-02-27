@@ -57,7 +57,7 @@ const Tester = () => {
                                     setText(await response.json());
                                 }}
                             >
-                                API-Anfrage
+                                Nächste Vokabel
                             </Button>
                                 <br />
                                 <p>{text.vocab}</p>
@@ -73,7 +73,7 @@ const Tester = () => {
                                         variant="outlined"
                                         type="submit"
                                     >
-                                        Submit
+                                        Bestätigen
                                     </Button>
                                 </form> </> : <p>Bitte Sprache auswählen</p>}
                         </Grid>

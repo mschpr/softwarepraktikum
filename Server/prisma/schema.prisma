@@ -13,18 +13,17 @@ model ProgressEnglish {
   IDUser       Int?
   date         DateTime?     @db.Date
   stage        Int?
-  Users        Users?        @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
   VocabEnglish VocabEnglish? @relation(fields: [IDVocab], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDVocab")
 }
 
 model Users {
-  ID              Int               @id @default(autoincrement())
-  username        String?           @db.VarChar
-  password        String?           @db.VarChar
-  name            String?           @db.VarChar
-  role            String?           @db.VarChar
-  ProgressEnglish ProgressEnglish[]
-  ProgressSpanish ProgressSpanish[]
+  ID           Int            @id @default(autoincrement())
+  username     String?        @unique(map: "username") @db.VarChar
+  password     String?        @db.VarChar
+  name         String?        @db.VarChar
+  role         String?        @db.VarChar
+  ClassMembers ClassMembers[]
+  Classes      Classes[]
 }
 
 model VocabEnglish {
@@ -40,7 +39,6 @@ model ProgressSpanish {
   IDUser       Int?
   date         DateTime?     @db.Date
   stage        Int?
-  Users        Users?        @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
   VocabSpanish VocabSpanish? @relation(fields: [IDVocab], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDVocab")
 }
 
@@ -49,4 +47,22 @@ model VocabSpanish {
   vocab           String            @db.VarChar
   translation     String            @db.VarChar
   ProgressSpanish ProgressSpanish[]
+}
+
+model ClassMembers {
+  IDClass Int
+  IDUser  Int
+  Classes Classes @relation(fields: [IDClass], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDClass")
+  Users   Users   @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
+
+  @@id([IDClass, IDUser])
+}
+
+model Classes {
+  ID           Int            @id @default(autoincrement()) @db.SmallInt
+  name         String?        @db.VarChar
+  teacher      String?        @db.VarChar
+  language     String?        @db.VarChar
+  ClassMembers ClassMembers[]
+  Users        Users?         @relation(fields: [teacher], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "teacher")
 }
