@@ -42,7 +42,7 @@ const Classes = () => {
             <Grid item md={10}>
                 {course ? <>
                     < AddPupil />
-                    <ClassChart />
+                    <ClassChart IDClass={course.IDClass} />
                     <p>Auf Schüler zuschneiden!</p>
                 </> : <p>Bitte Klasse auswählen</p>}
             </Grid>

@@ -155,3 +155,27 @@ export async function createClass(name, teacher, language) {
         },
     })
 }
+
+async function getClassMembers(IDClass) {
+    let allData = await prisma.ClassMembers.findMany({
+        where: {
+            IDClass: IDClass,
+        }
+    })
+    return allData
+}
+
+export async function getClassProgress(IDClass, language) {
+    let members = await getClassMembers(IDClass);
+    let tableName = `Progress${language}`;
+    let allData = [];
+    for (const member of members) {
+        let result = (await prisma[tableName].findMany({
+            where: {
+                IDUser: member.IDUser,
+            },
+        }));
+        allData.push(...result);
+    };
+    return allData;
+}

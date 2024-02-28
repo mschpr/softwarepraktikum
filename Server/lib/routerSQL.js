@@ -1,5 +1,5 @@
 import express from "express";
-import { addUserToClass, createClass, getClassesByMember, getProgressComplete, getVocabulary, learn, updateProgress } from "../src/main.js";
+import { addUserToClass, createClass, getClassProgress, getClassesByMember, getProgressComplete, getVocabulary, learn, updateProgress } from "../src/main.js";
 
 
 let routerSQL = express.Router();
@@ -26,7 +26,7 @@ routerSQL.post('/updateProgress', requireAuth, async (req, res) => {
 });
 
 routerSQL.get('/getProgressComplete', requireAuth, async (req, res) => {
-    res.send(await getProgressComplete(req.query.language, req.user.id))
+    res.send(await getProgressComplete(req.query.language, req.user.ID))
 });
 
 routerSQL.get('/getVocabulary', requireAuth, async (req, res) => {
@@ -56,6 +56,10 @@ routerSQL.post("/createClass", requireAuth, async (req, res) => {
     }
     res.send(await createClass(req.body.classname, req.user.username, req.body.language));
 });
+
+routerSQL.post("/getClassProgress", requireAuth, async (req, res) => {
+    res.send(await getClassProgress(req.body.IDClass, req.body.language));
+})
 
 routerSQL.all("*", async function (req, res) {
     try {

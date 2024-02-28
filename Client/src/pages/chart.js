@@ -14,6 +14,12 @@ async function getVocabulary(language) {
     return response.json();
 }
 
+function searchInObject(array, value) {
+    return array.some(function (object) {
+        return object.IDVocab === value;
+    })
+}
+
 let learned = [0, 0];
 let unfinished = [0, 0];
 let notStarted = [0, 0];
@@ -26,20 +32,20 @@ let EnglishNotStarted = [];
 let SpanishNotStarted = [];
 
 EnglishAll.forEach(function (e) {
-    if (!(EnglishProgress.includes(e))) {
-        EnglishNotStarted.push(e)
+    if (!(searchInObject(EnglishProgress, e.ID))) {
+        EnglishNotStarted.push(e.ID);
     }
-})
+});
 SpanishAll.forEach(function (e) {
-    if (!(SpanishProgress.includes(e))) {
-        SpanishNotStarted.push(e)
+    if (!(searchInObject(SpanishProgress, e.ID))) {
+        SpanishNotStarted.push(e.ID);
     }
-})
+});
 
-learned[0] = EnglishProgress.filter(e => { return e.Stufe >= 5 }).length;
-learned[1] = SpanishProgress.filter(e => { return e.Stufe >= 5 }).length;
-unfinished[0] = EnglishProgress.filter(e => { return e.Stufe < 5 }).length;
-unfinished[1] = SpanishProgress.filter(e => { return e.Stufe < 5 }).length;
+learned[0] = EnglishProgress.filter(e => { return e.stage >= 5 }).length;
+learned[1] = SpanishProgress.filter(e => { return e.stage >= 5 }).length;
+unfinished[0] = EnglishProgress.filter(e => { return e.stage < 5 }).length;
+unfinished[1] = SpanishProgress.filter(e => { return e.stage < 5 }).length;
 notStarted[0] = EnglishNotStarted.length;
 notStarted[1] = SpanishNotStarted.length;
 
