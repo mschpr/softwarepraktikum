@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { _ as routerAuth } from "../lib/routerAuth.js";
+import routerAuth from "../lib/routerAuth.js";
 import routerSQL from "../lib/routerSQL.js";
 import cookieSession from "cookie-session";
 import bcrypt from "bcrypt";

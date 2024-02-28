@@ -4,14 +4,14 @@ import passport from "passport";
 import { setUser } from "../src/main.js";
 import cors from 'cors';
 
-export let _ = express.Router();
+let routerAuth = express.Router();
 
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 }
 
-_.post("/register", async function (req, res) {
+routerAuth.post("/register", async function (req, res) {
     try {
         const { name, username, password } = req.body;
         let user = new User();
@@ -50,7 +50,7 @@ _.post("/register", async function (req, res) {
     }
 })
 
-_.post("/login", cors(corsOptions),
+routerAuth.post("/login", cors(corsOptions),
     (req, res, next) => {
         console.log(`1 - LogIn Handler ${JSON.stringify(req.body)}`);
         passport.authenticate("local",
@@ -87,21 +87,15 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-_.post("/logout", async function (req, res) { //TODO: Funktionalität implementieren
-    try {
-        res.status(200).json({
-            msg: "Erfolgreich abgemeldet",
-            code: 200
-        })
-    } catch (err) {
-        throw new Error(err)
-    }
+routerAuth.get("/logout", requireAuth, async function (req, res) {
+    req.session = null;
+    res.send();
 });
 
-_.get("/isteacher", requireAuth, function (req, res) {
+routerAuth.get("/isteacher", requireAuth, function (req, res) {
     if (req.user.role === "teacher") {
         res.status(200).json({
-            msg: "Erfolgreich authentifiziert",
+            msg: `${req.user.name} ist Lehrer`,
             code: 200
         })
     }
@@ -113,7 +107,7 @@ _.get("/isteacher", requireAuth, function (req, res) {
     }
 })
 
-_.all("*", async function (req, res) {
+routerAuth.all("*", async function (req, res) {
     try {
         res.status(404).json({
             msg: "Seite nicht gefunden",
@@ -123,3 +117,5 @@ _.all("*", async function (req, res) {
         throw new Error(err)
     }
 });
+
+export default routerAuth;
