@@ -45,7 +45,7 @@ const Login = () => {
                 variant="outlined"
                 type="submit"
             >
-                Submit
+                Anmelden
             </Button>
         </form>
         <a href="/register">Registrieren</a>

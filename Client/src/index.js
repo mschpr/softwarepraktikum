@@ -11,6 +11,7 @@ const Chart = lazy(() => import("./pages/chart.js"));
 const Login = lazy(() => import("./pages/login.js"));
 const Register = lazy(() => import("./pages/register.js"));
 const Classes = lazy(() => import("./pages/classes.js"));
+const CreateClass = lazy(() => import("./pages/createClass.js"));
 
 function App() {
     return (<>
@@ -21,6 +22,7 @@ function App() {
                     <NavLink to="/">Babbel</NavLink>
                     <NavLink to="info">Info</NavLink>
                     <NavLink to="chart">Statistik</NavLink>
+                    <NavLink to="classes">Klassen</NavLink>
                 </nav>
             </header>
             <main>
@@ -32,6 +34,7 @@ function App() {
                         <Route path="chart" element={<Chart />} />
                         <Route path="register" element={<Register />} />
                         <Route path="classes" element={<Classes />} />
+                        <Route path="createclass" element={<CreateClass />} />
                     </Routes>
                 </Suspense>
             </main>

@@ -145,3 +145,13 @@ export async function addUserToClass(username, IDClass) {
         },
     })
 }
+
+export async function createClass(name, teacher, language) {
+    await prisma.classes.create({
+        data: {
+            name: name,
+            teacher: teacher,
+            language: language
+        },
+    })
+}

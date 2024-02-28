@@ -5,11 +5,11 @@ import { setUser } from "../src/main.js";
 import cors from 'cors';
 
 export let _ = express.Router();
+
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 }
-
 
 _.post("/register", async function (req, res) {
     try {
@@ -75,7 +75,6 @@ _.post("/login", cors(corsOptions),
     }
 );
 
-
 const requireAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();
@@ -98,6 +97,21 @@ _.post("/logout", async function (req, res) { //TODO: Funktionalität implementi
         throw new Error(err)
     }
 });
+
+_.get("/isteacher", requireAuth, function (req, res) {
+    if (req.user.role === "teacher") {
+        res.status(200).json({
+            msg: "Erfolgreich authentifiziert",
+            code: 200
+        })
+    }
+    else {
+        res.status(403).json({
+            msg: "Keine Berechtigung",
+            code: 403
+        })
+    }
+})
 
 _.all("*", async function (req, res) {
     try {

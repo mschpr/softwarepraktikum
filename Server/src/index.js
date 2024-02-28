@@ -48,7 +48,7 @@ passport.deserializeUser(async (user, done) => {
     console.log(`Deserializing User: ${user.username}`);
     let result = await getUserByUsername(user.username);
     if (result.length === 1) {
-        return done(null, { id: result[0].ID, username: result[0].username });
+        return done(null, { ID: result[0].ID, username: result[0].username, role: result[0].role });
     } else {
         return done(new Error(`Kein User ${user.username} gefunden`));
     }

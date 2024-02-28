@@ -1,5 +1,5 @@
 import express from "express";
-import { addUserToClass, getClassesByMember, getProgressComplete, getVocabulary, learn, updateProgress } from "../src/main.js";
+import { addUserToClass, createClass, getClassesByMember, getProgressComplete, getVocabulary, learn, updateProgress } from "../src/main.js";
 
 
 let routerSQL = express.Router();
@@ -38,13 +38,23 @@ routerSQL.get("/getClassesByMember", requireAuth, async (req, res) => {
 });
 
 routerSQL.post("/addUsertoClass", requireAuth, async (req, res) => {
-    if (req.user.role !== "Lehrer") {
+    if (req.user.role !== "teacher") {
         res.status(403).json({
             msg: "Keine Berechtigung",
             code: 403
         })
     }
     res.send(await addUserToClass(req.body.username, req.body.IDClass))
+});
+
+routerSQL.post("/createClass", requireAuth, async (req, res) => {
+    if (req.user.role !== "teacher") {
+        res.status(403).json({
+            msg: "Keine Berechtigung",
+            code: 403
+        })
+    }
+    res.send(await createClass(req.body.classname, req.user.username, req.body.language));
 });
 
 routerSQL.all("*", async function (req, res) {
