@@ -107,6 +107,10 @@ routerAuth.get("/isteacher", requireAuth, function (req, res) {
     }
 })
 
+routerAuth.get("/getuser", requireAuth, (req, res) => {
+    res.send(req.user);
+})
+
 routerAuth.all("*", async function (req, res) {
     try {
         res.status(404).json({

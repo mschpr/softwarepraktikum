@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
 import { BrowserRouter, Link, NavLink, Route, Routes, redirect, useNavigate, useParams } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import './index.css';
 
 //pages
@@ -15,6 +15,19 @@ const Classes = lazy(() => import("./pages/classes.js"));
 const CreateClass = lazy(() => import("./pages/createClass.js"));
 
 function App() {
+
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let response = await fetch(`http://localhost:3001/auth/getUser`, { credentials: "include" });
+            let data = await response.json();
+            setUser(data);
+        };
+        fetchData();
+    }, []);
+
+
     return (<>
         <BrowserRouter>
             <header>
@@ -25,6 +38,7 @@ function App() {
                     <NavLink to="chart">Statistik</NavLink>
                     <NavLink to="classes">Klassen</NavLink>
                     <NavLink to="logout">Abmelden</NavLink>
+                    <p>{user?.name}</p>
                 </nav>
             </header>
             <main>
