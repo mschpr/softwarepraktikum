@@ -147,13 +147,14 @@ export async function addUserToClass(username, IDClass) {
 }
 
 export async function createClass(name, teacher, language) {
-    await prisma.classes.create({
+    const newClass = await prisma.classes.create({
         data: {
             name: name,
             teacher: teacher,
             language: language
         },
     })
+    await addUserToClass(teacher, newClass.ID);
 }
 
 async function getClassMembers(IDClass) {
