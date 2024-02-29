@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import ClassChart from "./classChart.js";
 
 import CreateClassButton from '../components/createClassButton.js';
-import AddPupil from '../components/addPupil.js';
+import ChangeClassMember from '../components/changeClassMember.js';
 
 const Classes = () => {
 
@@ -41,7 +41,7 @@ const Classes = () => {
             </Grid>
             <Grid item md={10}>
                 {course ? <>
-                    < AddPupil />
+                    < ChangeClassMember IDClass={course.IDClass} />
                     <ClassChart IDClass={course.IDClass} />
                 </> : <p>Bitte Klasse auswählen</p>}
             </Grid>

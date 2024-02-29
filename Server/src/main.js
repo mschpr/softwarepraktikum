@@ -146,6 +146,16 @@ export async function addUserToClass(username, IDClass) {
     })
 }
 
+export async function removeUserFromClass(username, IDClass) {
+    let user = await getUserByUsername(username);
+    await prisma.ClassMembers.deleteMany({
+        where: {
+            IDClass: IDClass,
+            IDUser: user[0].ID
+        },
+    })
+}
+
 export async function createClass(name, teacher, language) {
     const newClass = await prisma.classes.create({
         data: {
