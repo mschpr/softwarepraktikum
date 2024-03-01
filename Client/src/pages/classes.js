@@ -5,6 +5,7 @@ import ClassChart from "./classChart.js";
 
 import CreateClassButton from '../components/createClassButton.js';
 import ChangeClassMember from '../components/changeClassMember.js';
+import DeleteClassButton from '../components/deleteClassButton.js';
 
 const Classes = () => {
 
@@ -43,6 +44,7 @@ const Classes = () => {
                 {course ? <>
                     < ChangeClassMember IDClass={course.IDClass} />
                     <ClassChart IDClass={course.IDClass} />
+                    <DeleteClassButton IDClass={course.IDClass} />
                 </> : <p>Bitte Klasse auswählen</p>}
             </Grid>
         </Grid>

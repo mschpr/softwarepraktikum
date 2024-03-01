@@ -1,5 +1,5 @@
 import express from "express";
-import { addUserToClass, createClass, getClassProgress, getClassesByMember, getProgressPerUser, getVocabulary, learn, removeUserFromClass, updateProgress } from "./queries.js";
+import { addUserToClass, createClass, deleteClass, getClassProgress, getClassesByMember, getProgressPerUser, getVocabulary, learn, removeUserFromClass, updateProgress } from "./queries.js";
 import { requireAuth } from "./requireAuth.js";
 
 
@@ -27,40 +27,31 @@ routerSQL.get("/getClassesByMember", requireAuth, async (req, res) => {
 });
 
 routerSQL.post("/addUsertoClass", requireAuth, async (req, res) => {
-    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
-        res.status(403).json({
-            msg: "Keine Berechtigung",
-            code: 403
-        })
-    }
+    await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" });
     await addUserToClass(req.body.username, req.body.IDClass);
     res.end();
 });
 
 routerSQL.post("/removeUserfromClass", requireAuth, async (req, res) => {
-    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
-        res.status(403).json({
-            msg: "Keine Berechtigung",
-            code: 403
-        })
-    }
+    await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" });
     await removeUserFromClass(req.body.username, req.body.IDClass);
     res.end();
 });
 
 routerSQL.post("/createClass", requireAuth, async (req, res) => {
-    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
-        res.status(403).json({
-            msg: "Keine Berechtigung",
-            code: 403
-        })
-    }
+    await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" });
     await createClass(req.body.classname, req.user.username, req.body.language);
     res.end();
 });
 
 routerSQL.post("/getClassProgress", requireAuth, async (req, res) => {
     res.send(await getClassProgress(req.body.IDClass, req.body.language));
+});
+
+routerSQL.post("/deleteClass", requireAuth, async (req, res) => {
+    await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" });
+    await deleteClass(req.body.IDClass);
+    res.end();
 })
 
 routerSQL.all("*", async function (req, res) {

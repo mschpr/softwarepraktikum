@@ -52,7 +52,7 @@ model VocabSpanish {
 model ClassMembers {
   IDClass Int
   IDUser  Int
-  Classes Classes @relation(fields: [IDClass], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDClass")
+  Classes Classes @relation(fields: [IDClass], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "IDClass")
   Users   Users   @relation(fields: [IDUser], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "IDUser")
 
   @@id([IDClass, IDUser])

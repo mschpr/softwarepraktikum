@@ -10,7 +10,6 @@ const ChangeClassMember = (props) => {
     const addUserToClass = async (e) => {
         e.preventDefault();
         let req = { username: username, IDClass: props.IDClass };
-        console.log(req);
         await fetch("http://localhost:3001/sql/addUserToClass", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -22,7 +21,6 @@ const ChangeClassMember = (props) => {
     const removeUserFromClass = async (e) => {
         e.preventDefault();
         let req = { username: username, IDClass: props.IDClass };
-        console.log(req);
         await fetch("http://localhost:3001/sql/removeUserFromClass", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

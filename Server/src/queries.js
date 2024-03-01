@@ -174,4 +174,10 @@ export async function getClassProgress(IDClass, language) {
     return allData;
 }
 
-updateProgress(1, 3, "English");
+export async function deleteClass(ID) {
+    await prisma.Classes.delete({
+        where: {
+            ID: ID,
+        },
+    })
+}
