@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-Date.prototype.addDays = (days) => {
+Date.prototype.addDays = function (days) {
     let date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
@@ -167,7 +167,7 @@ export async function getClassProgress(IDClass, language) {
     let members = await getClassMembers(IDClass);
     let allData = [];
     for (const member of members) {
-        let result = getProgressPerUser(language, member.IDUser)
+        let result = await getProgressPerUser(language, member.IDUser)
         allData.push(...result);
     };
     return allData;
