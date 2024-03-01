@@ -1,46 +1,18 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import '../index.css';
-
-async function getProgress(language) {
-    const response = await fetch(`http://localhost:3001/sql/getProgressPerUser?language=${language}`, { credentials: "include" });
-    if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
-    return response.json();
-}
-
-async function getVocabulary(language) {
-    const response = await fetch(`http://localhost:3001/sql/getVocabulary?language=${language}`, { credentials: "include" })
-    if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
-    return response.json();
-}
-
-function searchInObject(array, value) {
-    return array.some(function (object) {
-        return object.IDVocab === value;
-    })
-}
+import { getNotStarted, getProgressPerUser, getVocabulary } from '../functions/chartfunctions.js';
 
 let learned = [0, 0];
 let unfinished = [0, 0];
 let notStarted = [0, 0];
 
-let EnglishProgress = await getProgress("English");
-let SpanishProgress = await getProgress("Spanish");
+let EnglishProgress = await getProgressPerUser("English");
+let SpanishProgress = await getProgressPerUser("Spanish");
 let EnglishAll = await getVocabulary("English");
 let SpanishAll = await getVocabulary("Spanish");
-let EnglishNotStarted = [];
-let SpanishNotStarted = [];
 
-EnglishAll.forEach(function (e) {
-    if (!(searchInObject(EnglishProgress, e.ID))) {
-        EnglishNotStarted.push(e.ID);
-    }
-});
-SpanishAll.forEach(function (e) {
-    if (!(searchInObject(SpanishProgress, e.ID))) {
-        SpanishNotStarted.push(e.ID);
-    }
-});
+let EnglishNotStarted = getNotStarted(EnglishAll, EnglishProgress);
+let SpanishNotStarted = getNotStarted(SpanishAll, SpanishProgress);
 
 learned[0] = EnglishProgress.filter(e => { return e.stage >= 5 }).length;
 learned[1] = SpanishProgress.filter(e => { return e.stage >= 5 }).length;

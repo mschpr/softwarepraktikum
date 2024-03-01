@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
+import { getIsTeacher } from "../functions/teacherfunctions.js";
 
 const ChangeClassMember = (props) => {
 
     const [username, setUsername] = useState();
+    const [isTeacher, setIsTeacher] = useState(false);
 
     const addUserToClass = async (e) => {
         e.preventDefault();
@@ -29,14 +31,9 @@ const ChangeClassMember = (props) => {
         });
     }
 
-    const [isTeacher, setIsTeacher] = useState(false);
-
     useEffect(() => {
         const fetchData = async () => {
-            let response = await fetch(`http://localhost:3001/auth/isteacher`, { credentials: "include" });
-            if (response.status === 200) {
-                setIsTeacher(true)
-            }
+            setIsTeacher(await getIsTeacher());
         };
         fetchData();
     }, []);

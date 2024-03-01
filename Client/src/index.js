@@ -1,10 +1,8 @@
 import { createRoot } from "react-dom/client";
-import { Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
-import { BrowserRouter, Link, NavLink, Route, Routes, redirect, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, NavLink, Route, Routes, } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import './index.css';
 
-//pages
 const Tester = lazy(() => import("./pages/tester.js"));
 const Info = lazy(() => import("./pages/info.js"));
 const Chart = lazy(() => import("./pages/chart.js"));

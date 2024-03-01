@@ -1,5 +1,6 @@
-import { Button, Container, Grid, List, ListItem, ListItemButton, ListItemText, ListSubheader, Paper, TextField } from '@mui/material';
+import { Grid, List, ListItem, ListItemButton, ListItemText, ListSubheader } from '@mui/material';
 import { useState, useEffect } from "react";
+
 import ClassChart from "./classChart.js";
 
 import CreateClassButton from '../components/createClassButton.js';
@@ -9,7 +10,6 @@ const Classes = () => {
 
     const [classes, setClasses] = useState();
     const [course, setCourse] = useState();
-    const [username, setUsername] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
