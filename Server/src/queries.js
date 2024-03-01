@@ -1,44 +1,43 @@
 import { PrismaClient } from "@prisma/client";
-import passport from "passport";
+
 const prisma = new PrismaClient();
 
-Date.prototype.addDays = function (days) {
-    var date = new Date(this.valueOf());
+Date.prototype.addDays = (days) => {
+    let date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
     return date;
 }
 
-// liefert alle Vokabeln
 export async function getVocabulary(language) {
-    let tableName = `Vocab${language}`;
-    let allData = await prisma[tableName].findMany();
+    return (await prisma[`Vocab${language}`].findMany());
+}
+
+export async function getProgressPerUser(language, IDUser) {
+    let allData = await prisma[`Progress${language}`].findMany({
+        where: {
+            IDUser: IDUser,
+        },
+    });
     return allData
 }
 
-// liefert IDVokabel, die nicht abgefragt werden sollen
-async function getProgress(language) {
-    let tableName = `Progress${language}`;
-    let allData = await prisma[tableName].findMany();
-    let allIDVokabel = [];
+async function getIDDoNotLearn(language, IDUser) {
+    let allData = await getProgressPerUser(language, IDUser);
+    let IDDoNotLearn = [];
     let today = new Date();
-    allData.forEach(function (e) {
-        if (e.Datum > today || e.Stufe > 3) {
-            allIDVokabel.push(e.IDVokabel)
+    allData.forEach((e) => {
+        if (e.date > today || e.stage > 3) {
+            IDDoNotLearn.push(e.IDVocab)
         }
     })
-    return allIDVokabel
+    return IDDoNotLearn
 }
 
 export async function updateProgress(IDVocab, IDUser, language) {
     let tableName = `Progress${language}`;
-    let vocabulary = await prisma[tableName].findMany({
-        where: {
-            IDVocab: IDVocab,
-            IDUser: IDUser,
-        },
-    })
+    let progress = await getProgressPerUser(language, IDUser);
     let today = new Date();
-    if (vocabulary.length === 0) {
+    if (progress.length === 0) {
         await prisma[tableName].create({
             data: {
                 IDVocab: IDVocab,
@@ -52,39 +51,27 @@ export async function updateProgress(IDVocab, IDUser, language) {
     else {
         await prisma[tableName].updateMany({
             where: {
-                IDVocab: vocabulary[0].IDVocab,
-                IDUser: vocabulary[0].IDUser,
+                IDVocab: progress[0].IDVocab,
+                IDUser: progress[0].IDUser,
             },
             data: {
                 date: today.addDays(7),
                 IDUser: IDUser,
-                stage: ++vocabulary[0].stage,
+                stage: ++progress[0].stage,
             },
         })
     }
 }
 
-// gibt zu lernende Vokabel aus
-export async function learn(language) {
+export async function learn(language, IDUser) {
     let vocabulary = await getVocabulary(language);
-    let progress = await getProgress(language);
-    vocabulary = vocabulary.filter(function (entry) { return progress.indexOf(entry.ID) === -1 });
+    let progress = await getIDDoNotLearn(language, IDUser);
+    vocabulary = vocabulary.filter((e) => { return progress.indexOf(e.ID) === -1 });
     if (vocabulary.length === 0) {
-        console.log("Alle Vokabeln gelernt :D");
         return;
     }
     let randomNumber = Math.floor(Math.random() * vocabulary.length);
     return vocabulary[randomNumber];
-}
-
-export async function getProgressComplete(language, IDUser) {
-    let tableName = `Progress${language}`;
-    let allData = await prisma[tableName].findMany({
-        where: {
-            IDUser: IDUser,
-        },
-    });
-    return allData
 }
 
 export async function getUserByUsername(username) {
@@ -178,14 +165,9 @@ async function getClassMembers(IDClass) {
 
 export async function getClassProgress(IDClass, language) {
     let members = await getClassMembers(IDClass);
-    let tableName = `Progress${language}`;
     let allData = [];
     for (const member of members) {
-        let result = (await prisma[tableName].findMany({
-            where: {
-                IDUser: member.IDUser,
-            },
-        }));
+        let result = getProgressPerUser(language, member.IDUser)
         allData.push(...result);
     };
     return allData;

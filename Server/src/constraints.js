@@ -1,6 +1,6 @@
-export let _ = {};
+export let constraints = {};
 
-_.name = () => {
+constraints.name = () => {
     const regex = "[\-\'A-Za-z0-9 ]+";
     const constraints = {
         "presence": {
@@ -16,16 +16,7 @@ _.name = () => {
     return constraints;
 }
 
-// _.email = () => {
-//     const constraints = {
-//         "presence": { "allowEmpty": false },
-//         "type": "string",
-//         "email": true
-//     }
-//     return constraints;
-// }
-
-_.password = () => {
+constraints.password = () => {
     const constraints = {
         "presence": { "allowEmpty": false },
         "type": "string",

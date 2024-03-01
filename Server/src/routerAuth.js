@@ -1,8 +1,9 @@
 import express from "express";
-import { _ as User } from "../models/user.js";
+import { user as User } from "../models/user.js";
 import passport from "passport";
-import { setUser } from "../src/main.js";
+import { setUser } from "./queries.js";
 import cors from 'cors';
+import { requireAuth } from "./requireAuth.js";
 
 let routerAuth = express.Router();
 
@@ -15,31 +16,14 @@ routerAuth.post("/register", async function (req, res) {
     try {
         const { name, username, password } = req.body;
         let user = new User();
-        let msg = false;
-        msg = user.setName(name);
-        if (msg) {
+        let feedbackName = user.setName(name);
+        let feedbackUsername = await user.setUsername(username);
+        let feedbackPassword = await user.setPassword(password);
+        if (feedbackName.result || feedbackUsername.result || feedbackPassword.result) {
             return res.status(400).json({
                 error: {
                     code: 400,
-                    message: msg
-                }
-            })
-        }
-        msg = await user.setUsername(username);
-        if (msg) {
-            return res.status(400).json({
-                error: {
-                    code: 400,
-                    message: msg
-                }
-            })
-        }
-        msg = await user.setPassword(password);
-        if (msg) {
-            return res.status(400).json({
-                error: {
-                    code: 400,
-                    message: msg
+                    message: (`${feedbackName.message} ${feedbackUsername.message} ${feedbackPassword.message}`)
                 }
             })
         }
@@ -52,13 +36,11 @@ routerAuth.post("/register", async function (req, res) {
 
 routerAuth.post("/login", cors(corsOptions),
     (req, res, next) => {
-        console.log(`1 - LogIn Handler ${JSON.stringify(req.body)}`);
         passport.authenticate("local",
             (err, user) => {
-                console.log(`3 - Password authenticate cb ${JSON.stringify(user)}`);
                 if (err || !user) {
                     return res.status(401).json({
-                        msg: "Zugriff verweigert",
+                        message: "Zugriff verweigert",
                         code: 401
                     });
                 }
@@ -68,31 +50,20 @@ routerAuth.post("/login", cors(corsOptions),
                         return next(err);
                     }
                     res.status(200).json({
-                        redirectTo: "/"
+                        message: "Zugriff gewährt",
+                        code: 200
                     })
                 })
             })(req, res, next)
     }
 );
 
-const requireAuth = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    }
-    else {
-        return res.status(403).json({
-            msg: "Zugang verweigert",
-            code: 403
-        })
-    }
-};
-
 routerAuth.get("/logout", requireAuth, async function (req, res) {
     req.session = null;
     res.send();
 });
 
-routerAuth.get("/isteacher", requireAuth, function (req, res) {
+routerAuth.get("/isTeacher", requireAuth, function (req, res) {
     if (req.user.role === "teacher") {
         res.status(200).json({
             msg: `${req.user.name} ist Lehrer`,
@@ -107,7 +78,7 @@ routerAuth.get("/isteacher", requireAuth, function (req, res) {
     }
 })
 
-routerAuth.get("/getuser", requireAuth, (req, res) => {
+routerAuth.get("/getUser", requireAuth, (req, res) => {
     res.send(req.user);
 })
 

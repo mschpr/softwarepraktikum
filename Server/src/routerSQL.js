@@ -1,32 +1,21 @@
 import express from "express";
-import { addUserToClass, createClass, getClassProgress, getClassesByMember, getProgressComplete, getVocabulary, learn, removeUserFromClass, updateProgress } from "../src/main.js";
+import { addUserToClass, createClass, getClassProgress, getClassesByMember, getProgressPerUser, getVocabulary, learn, removeUserFromClass, updateProgress } from "./queries.js";
+import { requireAuth } from "./requireAuth.js";
 
 
 let routerSQL = express.Router();
-const ClientURL = "http://localhost:3000/";
-const requireAuth = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    }
-    else {
-        return res.status(403).json({
-            msg: "Zugang verweigert",
-            code: 403
-        })
-    }
-};
 
 routerSQL.get('/learn', requireAuth, async (req, res) => {
-    res.send(await learn(req.query.language))
+    res.send(await learn(req.query.language, req.user.ID))
 });
 
 routerSQL.post('/updateProgress', requireAuth, async (req, res) => {
-    await updateProgress(req.body.text.ID, req.user.id, req.body.language);
+    await updateProgress(req.body.text.ID, req.user.ID, req.body.language);
     res.end();
 });
 
-routerSQL.get('/getProgressComplete', requireAuth, async (req, res) => {
-    res.send(await getProgressComplete(req.query.language, req.user.ID))
+routerSQL.get('/getProgressPerUser', requireAuth, async (req, res) => {
+    res.send(await getProgressPerUser(req.query.language, req.user.ID))
 });
 
 routerSQL.get('/getVocabulary', requireAuth, async (req, res) => {
@@ -38,33 +27,36 @@ routerSQL.get("/getClassesByMember", requireAuth, async (req, res) => {
 });
 
 routerSQL.post("/addUsertoClass", requireAuth, async (req, res) => {
-    if (req.user.role !== "teacher") {
+    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
         res.status(403).json({
             msg: "Keine Berechtigung",
             code: 403
         })
     }
-    res.send(await addUserToClass(req.body.username, req.body.IDClass))
+    await addUserToClass(req.body.username, req.body.IDClass);
+    res.end();
 });
 
 routerSQL.post("/removeUserfromClass", requireAuth, async (req, res) => {
-    if (req.user.role !== "teacher") {
+    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
         res.status(403).json({
             msg: "Keine Berechtigung",
             code: 403
         })
     }
-    res.send(await removeUserFromClass(req.body.username, req.body.IDClass))
+    await removeUserFromClass(req.body.username, req.body.IDClass);
+    res.end();
 });
 
 routerSQL.post("/createClass", requireAuth, async (req, res) => {
-    if (req.user.role !== "teacher") {
+    if (await fetch(`http://localhost:3001/auth/isTeacher`, { credentials: "include" })) {
         res.status(403).json({
             msg: "Keine Berechtigung",
             code: 403
         })
     }
-    res.send(await createClass(req.body.classname, req.user.username, req.body.language));
+    await createClass(req.body.classname, req.user.username, req.body.language);
+    res.end();
 });
 
 routerSQL.post("/getClassProgress", requireAuth, async (req, res) => {

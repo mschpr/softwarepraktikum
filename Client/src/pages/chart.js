@@ -3,7 +3,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import '../index.css';
 
 async function getProgress(language) {
-    const response = await fetch(`http://localhost:3001/sql/getProgressComplete?language=${language}`, { credentials: "include" });
+    const response = await fetch(`http://localhost:3001/sql/getProgressPerUser?language=${language}`, { credentials: "include" });
     if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
     return response.json();
 }
