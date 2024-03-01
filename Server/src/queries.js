@@ -36,6 +36,7 @@ async function getIDDoNotLearn(language, IDUser) {
 export async function updateProgress(IDVocab, IDUser, language) {
     let tableName = `Progress${language}`;
     let progress = await getProgressPerUser(language, IDUser);
+    progress = progress.filter((e) => { return e.IDVocab === IDVocab })
     let today = new Date();
     if (progress.length === 0) {
         await prisma[tableName].create({
@@ -172,3 +173,5 @@ export async function getClassProgress(IDClass, language) {
     };
     return allData;
 }
+
+updateProgress(1, 3, "English");
