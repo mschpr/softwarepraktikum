@@ -4,7 +4,6 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import './index.css';
 
 const Tester = lazy(() => import("./pages/tester.js"));
-const Info = lazy(() => import("./pages/info.js"));
 const Chart = lazy(() => import("./pages/chart.js"));
 const Login = lazy(() => import("./pages/login.js"));
 const Logout = lazy(() => import("./components/logout.js"));
@@ -32,10 +31,9 @@ function App() {
                 <nav>
                     <h1>Menü</h1>
                     <NavLink to="/">Startseite</NavLink>
-                    <NavLink to="info">Info</NavLink>
                     <NavLink to="chart">Statistik</NavLink>
                     <NavLink to="classes">Klassen</NavLink>
-                    <NavLink to="logout">Abmelden</NavLink>
+                    {user ? <NavLink to="logout">Abmelden</NavLink> : <NavLink to="login">Anmelden</NavLink>}
                     <p>{user?.name}</p>
                 </nav>
             </header>
@@ -43,7 +41,6 @@ function App() {
                 <Suspense>
                     <Routes>
                         <Route path="/" element={<Tester />} />
-                        <Route path="info" element={<Info />} />
                         <Route path="login" element={<Login />} />
                         <Route path="logout" element={<Logout />} />
                         <Route path="chart" element={<Chart />} />
