@@ -1,16 +1,19 @@
 import express from "express";
 import { user as User } from "../models/user.js";
 import passport from "passport";
-import { setUser } from "./queries.js";
+import { setPassword, setUser } from "./queries.js";
 import cors from 'cors';
 import { requireAuth } from "./requireAuth.js";
+import bcrypt from "bcrypt";
+import validate from "validate.js";
+import { constraints } from "../src/constraints.js";
 
 let routerAuth = express.Router();
 
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
-}
+};
 
 routerAuth.post("/register", async function (req, res) {
     try {
@@ -27,12 +30,12 @@ routerAuth.post("/register", async function (req, res) {
                 }
             })
         }
-        setUser(user.username, user.password, user.name);
+        await setUser(user.username, user.password, user.name);
         res.status(200).json(user);
     } catch (err) {
         throw new Error(err)
     }
-})
+});
 
 routerAuth.post("/login", cors(corsOptions),
     (req, res, next) => {
@@ -76,11 +79,26 @@ routerAuth.get("/isTeacher", requireAuth, function (req, res) {
             code: 403
         })
     }
-})
+});
 
 routerAuth.get("/getUser", requireAuth, (req, res) => {
     res.send(req.user);
-})
+});
+
+routerAuth.post("/updatePassword", requireAuth, async (req, res) => {
+    let validation = await validate.single(req.body.newPassword, constraints.password);
+    if (req.body.newPassword === req.body.confirmPassword && validation === undefined) {
+        let newPasswordHash = await bcrypt.hash(req.body.newPassword, 10);
+        await setPassword(req.user.ID, newPasswordHash);
+        res.send();
+    }
+    else {
+        res.status(400).json({
+            msg: "Eingaben stimmen nicht überein",
+            code: 400
+        });
+    }
+});
 
 routerAuth.all("*", async function (req, res) {
     try {

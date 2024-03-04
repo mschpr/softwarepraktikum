@@ -112,6 +112,17 @@ export async function getPassword(username) {
     return user[0].password
 }
 
+export async function setPassword(ID, password) {
+    await prisma.Users.updateMany({
+        where: {
+            ID: ID
+        },
+        data: {
+            password: password
+        },
+    })
+}
+
 export async function getClassesByMember(IDUser) {
     let allData = await prisma.ClassMembers.findMany({
         where: {

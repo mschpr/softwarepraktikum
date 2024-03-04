@@ -8,6 +8,7 @@ const Chart = lazy(() => import("./pages/chart.js"));
 const Login = lazy(() => import("./pages/login.js"));
 const Logout = lazy(() => import("./components/logout.js"));
 const Register = lazy(() => import("./pages/register.js"));
+const User = lazy(() => import("./pages/user.js"));
 const Classes = lazy(() => import("./pages/classes.js"));
 const CreateClass = lazy(() => import("./pages/createClass.js"));
 
@@ -43,6 +44,7 @@ function App() {
                         <Route path="/" element={<Tester />} />
                         <Route path="login" element={<Login />} />
                         <Route path="logout" element={<Logout />} />
+                        <Route path="user" element={<User />} />
                         <Route path="chart" element={<Chart />} />
                         <Route path="register" element={<Register />} />
                         <Route path="classes" element={<Classes />} />
