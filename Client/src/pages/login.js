@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Paper } from '@mui/material';
 import { useState } from "react";
 
 const Login = () => {
@@ -22,29 +22,34 @@ const Login = () => {
     }
 
     return (<>
-        <h1>Anmelden</h1>
-        <form onSubmit={submitCredentials} autoComplete="off">
-            <TextField
-                label="Username"
-                variant="outlined"
-                required
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-                label="Passwort"
-                variant="outlined"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-            />
-            <Button
-                variant="outlined"
-                type="submit"
-            >
-                Anmelden
-            </Button>
-        </form>
-        <a href="/register">Registrieren</a>
+        <Paper className="paperBackground" elevation={1}>
+            <h1 className="addMargin" >Anmelden</h1>
+            <form onSubmit={submitCredentials} autoComplete="off">
+                <TextField
+                    className="addMargin"
+                    label="Username"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <TextField
+                    className="addMargin"
+                    label="Passwort"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                />
+                <Button
+                    className="button addMargin"
+                    variant="outlined"
+                    type="submit"
+                >
+                    Anmelden
+                </Button>
+            </form>
+            <a className="addMargin" href="/register">Registrieren</a>
+        </Paper>
     </>)
 }
 export default Login;

@@ -26,7 +26,7 @@ const VocabTester = (props) => {
 
     return (<>
         <Button
-            variant="outlined"
+            className="button"
             onClick={async () => {
                 const response = await fetch(`http://localhost:3001/sql/learn?language=${props.language}`, { credentials: "include" });
                 if (response.status !== 200) { window.location.replace("http://localhost:3000/login"); };
@@ -35,18 +35,16 @@ const VocabTester = (props) => {
         >
             Nächste Vokabel
         </Button>
-        <br />
-        <p>{text.vocab}</p>
+        <p id="testerVocab">{text.vocab}</p>
         <form onSubmit={checkText} autoComplete="off">
             <TextField
-                id="Text"
                 label="Eingabe"
-                variant="outlined"
                 required
                 onChange={(e) => setCompare(e.target.value)}
             />
             <Button
-                variant="outlined"
+                className="button"
+                id="confirmVocab"
                 type="submit"
             >
                 Bestätigen

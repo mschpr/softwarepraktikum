@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 :root {
-    --primary: #bc4123;
-    --secondary: (244, 244, 244);
+    --backgroundElement: rgb(240, 240, 240);
 }
 
 body {
     margin: 0;
     padding: 20px;
     font-family: "Poppins";
-    background: var(--secondary);
+    background: #ADD8E6;
 }
 
 * {
@@ -21,17 +20,49 @@ p {
     margin: 20px 0;
 }
 
-button {
-    border: 0;
-    padding: 8px;
-    border-radius: 4px;
-    color: white;
-    background: var(--primary);
-    cursor: pointer;
+nav {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2em;
 }
 
-/* navbar */
-header nav {
-    display: flex;
-    gap: 15px;
+.paperBackground {
+    background: var(--backgroundElement) !important;
+}
+
+.listSubHeader {
+    background-color: rgba(0, 0, 0, 0%) !important;
+    font-size: larger !important;
+}
+
+.button {
+    background-color: #999999 !important;
+    border-radius: .75em !important;
+    color: #000000 !important;
+    text-transform: none !important;
+    font-size: medium !important;
+}
+
+.addMargin {
+    margin: .5em !important;
+}
+
+#testerVocab {
+    height: 1.5em;
+}
+
+#confirmVocab {
+    margin-left: 2em;
+}
+
+#labelChangePassword {
+    margin-left: .5em;
+    margin-bottom: .5em;
+    padding-top: .5em;
+}
+
+#labelCreateClass {
+    margin-left: .5em;
+    margin-bottom: .5em;
+    padding-top: .5em;
 }

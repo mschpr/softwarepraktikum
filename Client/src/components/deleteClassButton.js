@@ -23,9 +23,15 @@ const DeleteClassButton = (props) => {
         fetchData();
     }, []);
 
-    return isTeacher ? (
-        <Button variant="outlined" onClick={deleteClass}>Klasse löschen</Button>
-    ) : null;
+    return isTeacher ? (<>
+        <Button
+            className="button"
+            variant="outlined"
+            onClick={deleteClass}
+        >
+            Klasse löschen
+        </Button>
+    </>) : null;
 }
 
 export default DeleteClassButton;

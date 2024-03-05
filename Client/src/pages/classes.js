@@ -1,4 +1,4 @@
-import { Grid, List, ListItem, ListItemButton, ListItemText, ListSubheader } from '@mui/material';
+import { Grid, List, ListItem, ListItemButton, ListItemText, ListSubheader, Paper } from '@mui/material';
 import { useState, useEffect } from "react";
 
 import ClassChart from "./classChart.js";
@@ -23,31 +23,34 @@ const Classes = () => {
     }, []);
 
     return (<>
-        <CreateClassButton />
-        <Grid>
-            <Grid item md={2}>
-                <List>
-                    <ListSubheader>Klassen</ListSubheader>
-                    {classes && classes.map((element) => (
-                        <ListItem key={element.IDUser}>
-                            <ListItemButton
-                                selected
-                                onClick={() => setCourse(classes.find((c) => c.IDClass === element.IDClass))}
-                            >
-                                <ListItemText primary={element.Classes.name} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
+        <Paper className="paperBackground" elevation={1}>
+            <CreateClassButton />
+            <Grid container spacing={2}>
+                <Grid item md={2}>
+                    <List>
+                        <ListSubheader className="listSubHeader">Klassen</ListSubheader>
+                        {classes && classes.map((element) => (
+                            <ListItem key={element.IDUser}>
+                                <ListItemButton
+                                    className="button"
+                                    selected
+                                    onClick={() => setCourse(classes.find((c) => c.IDClass === element.IDClass))}
+                                >
+                                    <ListItemText primary={element.Classes.name} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Grid>
+                <Grid item md={10}>
+                    {course ? <>
+                        <ChangeClassMember IDClass={course.IDClass} />
+                        <ClassChart IDClass={course.IDClass} />
+                        <DeleteClassButton IDClass={course.IDClass} />
+                    </> : <p>Bitte Klasse auswählen</p>}
+                </Grid>
             </Grid>
-            <Grid item md={10}>
-                {course ? <>
-                    < ChangeClassMember IDClass={course.IDClass} />
-                    <ClassChart IDClass={course.IDClass} />
-                    <DeleteClassButton IDClass={course.IDClass} />
-                </> : <p>Bitte Klasse auswählen</p>}
-            </Grid>
-        </Grid>
+        </Paper>
     </>)
 }
 export default Classes;

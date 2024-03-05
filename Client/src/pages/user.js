@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Paper } from '@mui/material';
 
 export default function user() {
 
@@ -18,28 +18,33 @@ export default function user() {
     }
 
     return (<>
-        <p>Passwort ändern</p>
-        <form onSubmit={updatePassword} autoComplete="off">
-            <TextField
-                id="Text"
-                label="Neues Passwort"
-                variant="outlined"
-                required
-                onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <TextField
-                id="Text"
-                label="Neues Passwort bestätigen"
-                variant="outlined"
-                required
-                onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <Button
-                variant="outlined"
-                type="submit"
-            >
-                Bestätigen
-            </Button>
-        </form>
+        <Paper className="paperBackground" elevation={1}>
+            <h3 id="labelChangePassword" >Passwort ändern</h3>
+            <form onSubmit={updatePassword} autoComplete="off">
+                <TextField
+                    className="addMargin"
+                    label="Neues Passwort"
+                    variant="outlined"
+                    required
+                    type="password"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <TextField
+                    className="addMargin"
+                    label="Neues Passwort bestätigen"
+                    variant="outlined"
+                    required
+                    type="password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <Button
+                    className="button addMargin"
+                    variant="outlined"
+                    type="submit"
+                >
+                    Bestätigen
+                </Button>
+            </form>
+        </Paper>
     </>)
 }

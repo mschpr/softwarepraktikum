@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Paper } from "@mui/material";
 import { getIsTeacher } from "../functions/teacherfunctions.js";
 
 const CreateClass = () => {
@@ -25,27 +25,33 @@ const CreateClass = () => {
     }
 
     return (<>
-        <Typography>Neue Klasse erstellen</Typography>
-        <form onSubmit={submitClass} autoComplete="off">
-            <TextField
-                label="Klassenname"
-                variant="outlined"
-                required
-                onChange={(e) => setClassname(e.target.value)}
-            />
-            <TextField
-                label="Sprache"
-                variant="outlined"
-                required
-                onChange={(e) => setLanguage(e.target.value)}
-            />
-            <Button
-                variant="outlined"
-                type="submit"
-            >
-                Bestätigen
-            </Button>
-        </form>
+        <Paper className="paperBackground" elevation={1}>
+            <p id="labelCreateClass" >Neue Klasse erstellen</p>
+            <form onSubmit={submitClass} autoComplete="off">
+                <TextField
+                    className="textField"
+                    label="Klassenname"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setClassname(e.target.value)}
+                />
+                <TextField
+                    className="textField"
+                    label="Sprache"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setLanguage(e.target.value)}
+                />
+                <Button
+                    className="button"
+                    id="createClass"
+                    variant="outlined"
+                    type="submit"
+                >
+                    Bestätigen
+                </Button>
+            </form>
+        </Paper>
     </>)
 }
 

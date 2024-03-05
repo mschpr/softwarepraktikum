@@ -12,9 +12,14 @@ const CreateClassButton = () => {
         fetchData();
     }, []);
 
-    return isTeacher ? (
-        <Button variant="outlined" onClick={() => { window.location.replace("http://localhost:3000/createClass") }}>Klasse erstellen</Button>
-    ) : null;
+    return isTeacher ? (<>
+        <Button
+            className="button addMargin"
+            variant="outlined"
+            onClick={() => { window.location.replace("http://localhost:3000/createClass") }}>
+            Klasse erstellen
+        </Button>
+    </>) : null;
 }
 
 export default CreateClassButton;

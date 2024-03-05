@@ -37,13 +37,13 @@ function ClassChart(props) {
     return (<>
         <BarChart
             series={[
-                { data: learned },
-                { data: unfinished },
-                { data: notStarted },
+                { data: learned, label: "Gelernt" },
+                { data: unfinished, label: "Angefangen" },
+                { data: notStarted, label: "Ausstehend" },
             ]}
-            height={290}
-            xAxis={[{ data: ["Englisch", "Spanisch"], scaleType: 'band' }]}
-            margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+            height={300}
+            xAxis={[{ data: ["Englisch", "Spanisch"], scaleType: 'band', barGapRatio: .5 }]}
+            margin={{ top: 50, bottom: 30, left: 40, right: 10 }}
         />
     </>);
 }

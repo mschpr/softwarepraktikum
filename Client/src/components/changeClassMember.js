@@ -37,10 +37,10 @@ const ChangeClassMember = (props) => {
     }, []);
 
     return isTeacher ? (<>
-        <p>Schüler hinzufügen</p>
+        <p>Schüler hinzufügen / entfernen</p>
         <form autoComplete="off">
             <TextField
-                id="Username"
+                className="textField"
                 label="Username"
                 variant="outlined"
                 required
@@ -48,12 +48,14 @@ const ChangeClassMember = (props) => {
             />
         </form>
         <Button
+            className="button addMargin"
             variant="outlined"
             onClick={addUserToClass}
         >
             Hinzufügen
         </Button>
         <Button
+            className="button"
             variant="outlined"
             onClick={removeUserFromClass}
         >

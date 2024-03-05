@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Paper } from '@mui/material';
 import { useState } from "react";
 
 const Register = () => {
@@ -22,34 +22,40 @@ const Register = () => {
     }
 
     return (<>
-        <h1>Registrieren</h1>
-        <form onSubmit={createAccount} autoComplete="off">
-            <TextField
-                label="Name"
-                variant="outlined"
-                required
-                onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-                label="Username"
-                variant="outlined"
-                required
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <TextField
-                label="Passwort"
-                type="password"
-                variant="outlined"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-                variant="outlined"
-                type="submit"
-            >
-                Submit
-            </Button>
-        </form>
+        <Paper className="paperBackground" elevation={1}>
+            <h1 className="addMargin" >Registrieren</h1>
+            <form onSubmit={createAccount} autoComplete="off">
+                <TextField
+                    className="addMargin"
+                    label="Name"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                    className="addMargin"
+                    label="Username"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <TextField
+                    className="addMargin"
+                    label="Passwort"
+                    type="password"
+                    variant="outlined"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button
+                    className="button addMargin"
+                    variant="outlined"
+                    type="submit"
+                >
+                    Bestätigen
+                </Button>
+            </form>
+        </Paper>
     </>)
 }
 
