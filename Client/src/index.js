@@ -21,6 +21,7 @@ function App() {
             let response = await fetch(`http://localhost:3001/auth/getUser`, { credentials: "include" });
             let data = await response.json();
             setUser(data);
+            console.log(data);
         };
         fetchData();
     }, []);
@@ -34,7 +35,7 @@ function App() {
                     <NavLink to="/">Startseite</NavLink>
                     <NavLink to="chart">Statistik</NavLink>
                     <NavLink to="classes">Klassen</NavLink>
-                    {user ? <NavLink to="logout">Abmelden</NavLink> : <NavLink to="login">Anmelden</NavLink>}
+                    {user?.name ? <NavLink to="logout">Abmelden</NavLink> : <NavLink to="login">Anmelden</NavLink>}
                     <p>{user?.name}</p>
                 </nav>
             </header>
