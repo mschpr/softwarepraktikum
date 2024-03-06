@@ -47,6 +47,26 @@ nav {
     margin: .5em !important;
 }
 
+.errorText {
+    white-space: nowrap;
+    padding: .5em;
+}
+
+.errorPaper {
+    background-color: rgba(255, 0, 0, 50%) !important;
+    width: min-content;
+}
+
+.confirmText {
+    white-space: nowrap;
+    padding: .5em;
+}
+
+.confirmPaper {
+    background-color: rgba(0, 255, 0, 50%) !important;
+    width: min-content;
+}
+
 #testerVocab {
     height: 1.5em;
 }

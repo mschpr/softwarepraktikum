@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { getIsTeacher } from "../functions/teacherfunctions.js";
+import ConfirmText from "./confirmText.js";
 
 const ChangeClassMember = (props) => {
 
     const [username, setUsername] = useState();
     const [isTeacher, setIsTeacher] = useState(false);
+    const [displayError, setDisplayError] = useState(false);
+    const [displayConfirm, setDisplayConfirm] = useState(false);
 
     const addUserToClass = async (e) => {
         e.preventDefault();
@@ -16,6 +19,7 @@ const ChangeClassMember = (props) => {
             body: JSON.stringify(req),
             credentials: "include"
         });
+        setDisplayConfirm("Nutzer zu Klasse hinzugefügt");
     }
 
     const removeUserFromClass = async (e) => {
@@ -27,6 +31,7 @@ const ChangeClassMember = (props) => {
             body: JSON.stringify(req),
             credentials: "include"
         });
+        setDisplayConfirm("Nutzer aus Klasse entfernt");
     }
 
     useEffect(() => {
@@ -61,6 +66,7 @@ const ChangeClassMember = (props) => {
         >
             Entfernen
         </Button>
+        {displayConfirm ? <ConfirmText text={displayConfirm} /> : null}
     </>) : null;
 }
 

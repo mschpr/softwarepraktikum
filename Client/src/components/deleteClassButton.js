@@ -1,8 +1,11 @@
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getIsTeacher } from "../functions/teacherfunctions.js";
+import ConfirmText from '../components/confirmText.js';
 
 const DeleteClassButton = (props) => {
+
+    const [displayConfirm, setDisplayConfirm] = useState(false);
 
     const deleteClass = async () => {
         let req = { IDClass: props.IDClass };
@@ -12,6 +15,7 @@ const DeleteClassButton = (props) => {
             body: JSON.stringify(req),
             credentials: "include"
         });
+        setDisplayConfirm("Klasse gelöscht");
     }
 
     const [isTeacher, setIsTeacher] = useState(false);
@@ -31,6 +35,7 @@ const DeleteClassButton = (props) => {
         >
             Klasse löschen
         </Button>
+        {displayConfirm ? <ConfirmText text={displayConfirm} /> : null}
     </>) : null;
 }
 

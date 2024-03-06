@@ -1,11 +1,11 @@
 import express from "express";
-import { user as User } from "../models/user.js";
-import passport from "passport";
-import { setPassword, setUser } from "./queries.js";
-import cors from 'cors';
-import { requireAuth } from "./requireAuth.js";
 import bcrypt from "bcrypt";
 import validate from "validate.js";
+import passport from "passport";
+import cors from 'cors';
+import { user as User } from "../models/user.js";
+import { setPassword, setUser } from "./queries.js";
+import { requireAuth } from "./requireAuth.js";
 import { constraints } from "../src/constraints.js";
 
 let routerAuth = express.Router();
@@ -90,7 +90,10 @@ routerAuth.post("/updatePassword", requireAuth, async (req, res) => {
     if (req.body.newPassword === req.body.confirmPassword && validation === undefined) {
         let newPasswordHash = await bcrypt.hash(req.body.newPassword, 10);
         await setPassword(req.user.ID, newPasswordHash);
-        res.send();
+        res.status(200).json({
+            msg: "Passwort geändert",
+            code: 200
+        });
     }
     else {
         res.status(400).json({

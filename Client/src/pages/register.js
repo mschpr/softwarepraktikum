@@ -1,11 +1,13 @@
 import { Button, TextField, Paper } from '@mui/material';
 import { useState } from "react";
+import ErrorText from '../components/errorText.js';
 
 const Register = () => {
 
     const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+    const [displayError, setDisplayError] = useState(false);
 
     const createAccount = async (e) => {
         let req = { name: name, username: username, password: password };
@@ -18,6 +20,10 @@ const Register = () => {
         })
         if (response.status === 200) {
             window.location.replace("http://localhost:3000/");
+        }
+        else {
+            const data = await response.json();
+            setDisplayError(await data.error.message);
         }
     }
 
@@ -55,6 +61,7 @@ const Register = () => {
                     Bestätigen
                 </Button>
             </form>
+            {displayError ? <ErrorText text={displayError} /> : null}
         </Paper>
     </>)
 }

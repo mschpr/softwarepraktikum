@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, TextField, Paper } from "@mui/material";
 import { getIsTeacher } from "../functions/teacherfunctions.js";
+import ConfirmText from "../components/confirmText.js";
 
 const CreateClass = () => {
 
@@ -13,8 +14,10 @@ const CreateClass = () => {
 
     const [classname, setClassname] = useState();
     const [language, setLanguage] = useState();
+    const [confirmText, setConfirmText] = useState(false);
 
-    const submitClass = async () => {
+    const submitClass = async (e) => {
+        e.preventDefault();
         let req = { classname: classname, language: language };
         await fetch("http://localhost:3001/sql/createClass", {
             method: "POST",
@@ -22,6 +25,7 @@ const CreateClass = () => {
             body: JSON.stringify(req),
             credentials: "include"
         })
+        setConfirmText("Klasse wurde erstellt");
     }
 
     return (<>
@@ -51,6 +55,7 @@ const CreateClass = () => {
                     Bestätigen
                 </Button>
             </form>
+            {confirmText ? <ConfirmText text={confirmText} /> : null}
         </Paper>
     </>)
 }
