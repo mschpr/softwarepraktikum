@@ -1,4 +1,4 @@
-# Dokumentation Vokabeltester
+# ✨WordWise✨
 
 ## Zielsetzung
 ### Funktionsumfang
@@ -204,3 +204,78 @@ Express: https://expressjs.com/en/starter/installing.html
 
 
 YT Tutorial Passport: https://www.youtube.com/watch?v=fYow8zDOUVg&list=PLUUOvUPrFYcjel-IKiAQY4coJJ9EUjfcP&index=21
+
+
+## Einführung und Ziele
+Das Ziel meines Softwareprojekts ist es, einen Vokabeltester zu entwickeln, der zum Beispiel an Schulen eingesetzt werden kann. Das Programm soll durch die Abfrage von Vokabeln beim Lernen einer Sprache unterstützen und Feedback über den Lernerfolg geben. Um in der Umgebung einer Schulklasse zu funktionieren, müssen mehrere Nutzer das Programm gleichzeitig und unabhängig voneinander nutzen können. Benutzer müssen sich als Klassen zusammenfassen lassen und haben dann einen gemeinsamen Lernfortschritt. 
+
+## Lösungsstrategie
+Zur Umsetzung dieser Anforderungen wird eine Webseite verwendet, welche auf eine lokal gehostete Datenbank zugreift. Die Benutzeroberfläche kommuniziert über eine API mit dem Server, über den sämtliche Daten bereitgestellt und verwaltet werden. Ein Anwender kann sich registrieren und von da an mit dem erstellten Account arbeiten. Die Nutzerverwaltung findet auf dem Server statt, welcher die Anmeldedaten wiederum auf der Datenbank speichert. 
+
+### Datenbank
+Die SQL-Datenbank wird auf dem Server gehostet und nutzt PostgreSQL als DBMS. PostgreSQL wird genutzt, da es für die Zwecke dieses Projekts ausreicht und bereits aus anderen Vorlesungen bekannt war. Es gibt zu jeder Sprache, die das Programm abfragen kann, zwei Tabellen. Die erste Tabelle enthält die Vokabeln ihre Übersetzungen. Die zweite speichert den individuellen Lernfortschritt aller User. Die Vokabeln und der Lernfortschritt werden pro Sprache in einzelnen Tabellen gespeichert, um eine klare Struktur zu wahren. Die Erweiterung des Programms um weitere Sprachen hätte andernfalls zu einer riesigen unübersichtlicheren Tabelle geführt. 
+
+#### Vocab...
+| Spalte | Beschreibung | Referenziert |
+|---|---|---|
+|ID|Primärschlüssel, inkrementiert automatisch|/|
+|vocab|Die eigentliche Vokabel|/|
+|translation|Die deutsche Übersetzung der Vokabel|/|
+
+#### Progress...
+| Spalte | Beschreibung | Referenziert |
+|---|---|---|
+|ID|Primärschlüssel, inkrementiert automatisch|/|
+|IDVocab|Fremdschlüssel, Verweis auf gelernte Vokabel|Vocab... (ID)|
+|IDUser|Fremdschlüssel, Verweis auf User|Users (ID)|
+|date|Das Datum des letzen Updates des Eintrags|/|
+|stage|Zähler, wie oft bereits korrekt beantwortet|/|
+
+\
+Alle Anmelde- und Berechtigungsinformationen der Nutzer werden in der Tabelle Users gespeichert.
+#### Users
+| Spalte | Beschreibung | Referenziert |
+|---|---|---|
+|ID|Primärschlüssel, inkrementiert automatisch|/|
+|username|Nutzername, wird bei der Anmeldung genutzt|/|
+|password|per bcrypt gehasht|/|
+|name|Anzeigename, kann sich von username unterscheiden|/|
+|role|Berechtigungsrolle, durch Admin zu vergeben|/|
+
+\
+Klassen werden in zwei Tabellen gespeichert. Die Tabelle Classes speichert alle Grundinformationen und die Tabelle ClassMembers die Mitglieder der Klassen.
+
+#### Classes
+| Spalte | Beschreibung | Referenziert |
+|---|---|---|
+|ID|Primärschlüssel, inkrementiert automatisch|/|
+|name|Anzeigename der Klasse|/|
+|teacher|Der Lehrer, der die Klasse erstellt hat|/|
+|language|Die gewählte Sprache der Klasse|/|
+
+#### ClassMembers
+| Spalte | Beschreibung | Referenziert |
+|---|---|---|
+|IDClass|Fremdschlüssel, Verweis auf Klasse|Classes (ID)|
+|IDUser|Fremdschlüssel, Verweis auf User| Users (ID)|
+
+### Frontend
+Das Frontend der Anwendung wird mit React umgesetzt und nutzt MaterialUI zum Styling. Wird ein Teil der Seite aufgerufen, der nutzerspezifischen Inhalte enthält, wird geprüft, ob ein User angemeldet ist. Ist dies nicht der Fall, wird er Nutzer auf die Anmeldeseite weitergeleitet. Im Folgenden wird die Funktion aller zentralen Code-Elemente erklärt.
+
+#### Basis
+Die Basis des Client bildet "Client\src\index.js". Dort wird die React-Anwendung in die html-Datei eingebunden und es wird das Layout mit Navigationsleiste festgelegt. Der React-Router legt Pfade fest, welche vom Browser zu erreichen sind. Pro Pfad wird ein Element hinterlegt, das beim Aufruf des Pfads geladen wird. Der lazy-import der Seiten und Komponenten sorgt dafür, dass sie tatsächlich erst während der Laufzeit geladen werden, sobald sie angefragt wurden. Dies erhöht die Performance der Seite und beugt Fehler vor, die entstehen können, wenn kein Nutzer angemeldet ist. 
+
+#### Vokabeltester
+Über die Seite "tester" und die Komponente "vocabTester" wird die zentrale Funktion, das Lernen von Vokabeln, implementiert. Es wird eine Liste mit allen verfügbaren Sprachen generiert. Klickt der User auf eine dieser Sprachen, wird die Komponente "vocabTester" für die gewählte Sprache aufgerufen. Die Komponente lädt per API-Aufruf ein Vokabel-Objekt und gibt die Vokabel aus. Bestätigt der Benutzer seine Eingabe, wird sie mit der hinterlegten Übersetzung verglichen und der Nutzer erhält ein Feedback. War die Eingabe korrekt, wird der Lernfortschritt per API-Aufruf in der Datenbank festgehalten. 
+
+#### Statistik
+Die individuellen Statistiken werden in der Seite "chart" und über die Funktionen in "chartfunctions" eingebaut. Zur Umsetzung der Darstellung wird das Element "BarChart" der MaterialUI genutzt, welches die Daten als Array erfordert. Es gibt die Stati gelernt, angefangen und ausstehend. Sie repräsentieren, wie viele Vokabeln einer Sprache bereits gelernt wurden. Eine Vokabel gilt als angefangen, wenn sie mindestens ein Mal korrekt beantwortet wurde. Sobald eine Vokabel fünf Mal korrekt beantwortet wurde, gilt sie als gelernt. Jeder der drei Status-Arrays benötigt einen Eintrag pro Sprache. Die Werte für die Arrays werden per API-Anfrage ermittelt. 
+
+#### Klassen
+Klassen werden mit Hilfe der Seiten "classes" und "classChart" dargestellt und nutzen die Komponenten "createClassButton", "changeClassMember" und "deleteClassButton". Beim Aufruf der Seite wird eine Liste aller Klassen erzeugt, in denen der Nutzer ein Mitglied ist. Die drei Komponenten werden nur angezeigt, wenn der angemeldete Nutzer die Rolle Lehrer hat. Sobald auf eine Klasse geklickt wird, werden die Inhalte passend zu Klasse geladen. Die Klassenstatistiken funktionieren zum Großteil identisch zu den individuellen Statistiken. Der einzige Unterschied besteht darin, dass der Klassenfortschritt vom Server angefragt wird.
+
+### Backend
+
+## Installation / Ersteinrichtung
+
+## Starten der Anwendung
