@@ -15,6 +15,12 @@ const corsOptions = {
     credentials: true
 };
 
+/* 
+Zur Einrichtung der Authentifizierung via Passport habe ich mich an einer Tutorialreihe auf YouTube orientiert.
+Leider wurde dort kein öffentlich zugängliches Repo hinterlegt, daher verweise ich hier auf die Playlist.
+https://www.youtube.com/watch?v=8fT9GxPdBkg&list=PLUUOvUPrFYcjel-IKiAQY4coJJ9EUjfcP&index=1
+*/
+
 routerAuth.post("/register", async function (req, res) {
     try {
         const { name, username, password } = req.body;
